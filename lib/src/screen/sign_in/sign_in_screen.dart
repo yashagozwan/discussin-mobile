@@ -1,3 +1,5 @@
+import 'package:discussin_mobile/src/widget/elevated_button_pro.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,19 +30,67 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(13),
+                    isDense: true,
                     hintText: 'Email',
                     border: OutlineInputBorder(),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextFormField(
-                  controller: _emailController,
+                  controller: _passwordController,
                   decoration: const InputDecoration(
-                    hintText: 'Email',
+                    contentPadding: EdgeInsets.all(13),
+                    isDense: true,
+                    hintText: 'Password',
                     border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButtonPro(
+                  onPressed: () {},
+                  title: 'Login',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Stack(
+                  children: [
+                    const Divider(
+                      thickness: 2,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 30,
+                        color: Colors.white,
+                        child: const Text('Or'),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Text.rich(
+                    TextSpan(text: "Don't have account?", children: [
+                      TextSpan(
+                        text: " Sign Up",
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ]),
                   ),
                 ),
               ],
