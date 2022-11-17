@@ -61,6 +61,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFf3f2f2),
                       contentPadding: EdgeInsets.all(13),
                       prefixIcon: Icon(Icons.email_outlined),
                       isDense: true,
@@ -74,7 +76,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: const InputDecoration(
-                      fillColor: Colors.amber,
+                      filled: true,
+                      fillColor: Color(0xFFf3f2f2),
                       contentPadding: EdgeInsets.all(13),
                       prefixIcon: Icon(Icons.lock_outline_rounded),
                       isDense: true,
