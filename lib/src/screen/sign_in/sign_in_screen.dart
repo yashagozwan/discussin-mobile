@@ -32,6 +32,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Image.asset('assets/images/group.png', scale: 3),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
