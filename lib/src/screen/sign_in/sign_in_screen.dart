@@ -1,3 +1,4 @@
+import 'package:discussin_mobile/src/screen/sign_up/sign_up_screen.dart';
 import 'package:discussin_mobile/src/widget/elevated_button_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     TextSpan(text: "Don't have account?", children: [
                       TextSpan(
                         text: " Sign Up",
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const SignUpScreen();
+                                },
+                              ),
+                            );
+                          },
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ]),
