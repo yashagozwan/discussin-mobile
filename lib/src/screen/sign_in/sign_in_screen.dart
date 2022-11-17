@@ -40,6 +40,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     isDense: true,
                     hintText: 'Email',
                     border: OutlineInputBorder(),
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(top: 0), // add padding to adjust icon
+                      child: Icon(Icons.email),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -52,6 +56,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     isDense: true,
                     hintText: 'Password',
                     border: OutlineInputBorder(),
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(top: 0), // add padding to adjust icon
+                      child: Icon(Icons.password),
+                    ),
                   ),
                 ),
                 const SizedBox(
