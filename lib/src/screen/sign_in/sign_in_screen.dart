@@ -1,3 +1,4 @@
+import 'package:discussin_mobile/src/screen/sign_in/widget/text_field_password.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -86,34 +87,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
+                  TextFieldPassword(
                     controller: _passwordController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color(0xFFCCD9F9),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 4,
-                      ),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Image.asset(
-                          'assets/icons/lock.png',
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      isDense: true,
-                      hintText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                    ),
+                    hintText: 'Password',
                   ),
                   const SizedBox(
                     height: 10,
