@@ -40,7 +40,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _title(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
                 _buildFields(),
               ],
             ),
@@ -99,7 +99,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
         const SizedBox(height: 8),
         TextFormFieldPro(
-          controller: _usernameController,
+          controller: _emailController,
           hintText: 'Your E-mail Address',
         ),
         const SizedBox(height: 16),
