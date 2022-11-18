@@ -1,8 +1,9 @@
-import 'package:discussin_mobile/src/screen/sign_up/sign_up_screen.dart';
-import 'package:discussin_mobile/src/widget/elevated_button_pro.dart';
+import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../sign_up/sign_up_screen.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -25,87 +26,163 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Image.asset('assets/images/group.png', scale: 3),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(13),
-                    isDense: true,
-                    hintText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(13),
-                    isDense: true,
-                    hintText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButtonPro(
-                  onPressed: () {},
-                  title: 'Login',
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Stack(
-                  children: [
-                    const Divider(
-                      thickness: 2,
+      body: SingleChildScrollView(
+        child: Form(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Image.asset(
+                      'assets/images/Discussin_Login_Image.png',
+                      scale: 1,
                     ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 30,
-                        color: Colors.white,
-                        child: const Text('Or'),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Text.rich(
-                    TextSpan(text: "Don't have account?", children: [
-                      TextSpan(
-                        text: " Sign Up",
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const SignUpScreen();
-                                },
-                              ),
-                            );
-                          },
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ]),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextPro(
+                        'Aloha!',
+                        fontSize: 32,
+                      )),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFFCCD9F9),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 4,
+                      ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Image.asset(
+                          'assets/icons/at.png',
+                          width: 20,
+                          height: 20,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      isDense: true,
+                      hintText: 'Email ID',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFFCCD9F9),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 4,
+                      ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Image.asset(
+                          'assets/icons/lock.png',
+                          width: 20,
+                          height: 20,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      isDense: true,
+                      hintText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text.rich(
+                      TextSpan(
+                        text: "Forget Password?",
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF285FE7),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xffFBEB23),
+                      foregroundColor: Colors.black54,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const TextPro(
+                      'Login',
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF142650),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Text.rich(
+                      TextSpan(text: "New to Diskusi.in?", children: [
+                        TextSpan(
+                          text: " Register",
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const SignUpScreen();
+                                  },
+                                ),
+                              );
+                            },
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF285FE7),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

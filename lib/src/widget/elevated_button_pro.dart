@@ -14,8 +14,8 @@ class ElevatedButtonPro extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(13),
-        backgroundColor: const Color(0xFF6558f5),
+        padding: const EdgeInsets.fromLTRB(13, 20, 13, 20),
+        backgroundColor: const Color(0xFFC4C4C4),
         foregroundColor: Colors.white.withOpacity(0.5),
       ),
       child: Text(
