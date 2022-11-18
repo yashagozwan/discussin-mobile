@@ -15,7 +15,7 @@ class TextPro extends StatelessWidget {
     this.fontSize,
     this.textAlign,
     this.height,
-    this.color,
+    this.color = const Color(0xFF142650),
   });
 
   @override
