@@ -25,7 +25,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         horizontal: 16,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xffadaaaa).withOpacity(0.15),
+        color: const Color(0xFFCCD9F9),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

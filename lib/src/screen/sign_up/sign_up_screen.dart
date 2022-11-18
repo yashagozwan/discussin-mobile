@@ -72,14 +72,16 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     Navigator.pop(context);
                   },
                 style: const TextStyle(
-                  color: Color(0xffc4c4c4),
+                  color: Color(0xFF285FE7),
                   decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
           style: const TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF142650),
           ),
         ),
       ],
@@ -124,7 +126,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xffc4c4c4),
+            backgroundColor: const Color(0xffFBEB23),
+            foregroundColor: Colors.black54,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -134,6 +137,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           child: const TextPro(
             'Create Account',
             fontWeight: FontWeight.w700,
+            color: Color(0xFF142650),
           ),
         ),
       ],
