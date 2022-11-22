@@ -1,5 +1,6 @@
 import 'package:discussin_mobile/src/screen/sign_up/widget/text_field_password.dart';
 import 'package:discussin_mobile/src/screen/sign_up/widget/text_form_field_pro.dart';
+import 'package:discussin_mobile/src/widget/alert_success.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
         const SizedBox(height: 24),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: _showAlertDialog,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xffFBEB23),
             foregroundColor: Colors.black54,
@@ -141,6 +142,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showAlertDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => const AlertSuccess(),
     );
   }
 }
