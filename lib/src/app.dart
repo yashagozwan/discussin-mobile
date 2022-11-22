@@ -1,4 +1,4 @@
-import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
+import 'package:discussin_mobile/src/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Poppins',
       ),
-      home: const SignInScreen(),
+      home: const SplashScreen(),
     );
   }
 }
