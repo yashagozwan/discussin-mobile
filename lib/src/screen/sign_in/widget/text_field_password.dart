@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class TextFieldPassword extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
-
+  final String? Function(String? value)? validator;
+  
   const TextFieldPassword({
     super.key,
     this.controller,
     this.hintText,
+    this.validator
   });
 
   @override

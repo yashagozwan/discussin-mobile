@@ -4,6 +4,7 @@ import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -26,11 +27,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
+        key: _formKey,
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -101,6 +104,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         TextFormFieldPro(
           controller: _emailController,
           hintText: 'Your E-mail Address',
+          validator: (input) => input!.isValidEmail() ? null : "Check your email",
         ),
         const SizedBox(height: 16),
         const TextPro(
@@ -111,6 +115,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         TextFormFieldPro(
           controller: _usernameController,
           hintText: 'Your username',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter username';
+            }
+            return null;
+          },
         ),
         const SizedBox(height: 16),
         const TextPro(
@@ -121,10 +131,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         TextFieldPassword(
           controller: _passwordController,
           hintText: 'Your password',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter username';
+            }
+            return null;
+          },
         ),
         const SizedBox(height: 24),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                }
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xffFBEB23),
             foregroundColor: Colors.black54,
@@ -144,3 +166,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     );
   }
 }
+
+extension EmailValidator on String {
+  bool isValidEmail() {
+    return RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
+  }
+}
+

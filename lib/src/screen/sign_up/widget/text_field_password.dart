@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class TextFieldPassword extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
-
+  final String? Function(String? value)? validator;
   const TextFieldPassword({
     super.key,
     this.controller,
     this.hintText,
+    this.validator
   });
 
   @override
@@ -39,6 +40,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
                 isDense: true,
                 hintText: widget.hintText,
               ),
+              validator: validator,
             ),
           ),
           const SizedBox(width: 8),
@@ -49,5 +51,8 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         ],
       ),
     );
+  }
+
+  String? validator(String? value) {
   }
 }
