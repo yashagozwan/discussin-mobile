@@ -23,14 +23,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               color: primaryBlue,
               fontWeight: FontWeight.w600,
             ),
-            SizedBox(width: 280),
-            Icon(Icons.notifications_sharp,
-            
-            )
           ],
         ),
         backgroundColor: yellow,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: new Icon(Icons.notifications_none_outlined),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
