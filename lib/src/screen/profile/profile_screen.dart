@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,41 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ],
       ),
+      body: editprofile(),
     );
   }
+}
+
+Widget editprofile() {
+  return Column(children: [
+          Stack(
+            children: [
+              Container(
+                  padding: EdgeInsets.fromLTRB(30, 20, 0, 0),
+                  child: CachedNetworkImage(
+                  imageUrl: 'https://picsum.photos/250?image=9',
+                  alignment: Alignment.center,
+                  imageBuilder: (context, image) => CircleAvatar(
+                    backgroundImage: image,
+                    radius: 60,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(110, 110, 0, 0),
+                width: 45,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                  iconSize: 22,
+                  icon: Icon(Icons.edit),
+                  onPressed: () {},
+                ),
+              )
+            ],
+          )
+        ]);
 }
