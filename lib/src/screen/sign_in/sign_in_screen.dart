@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:discussin_mobile/src/model/sign_in_model.dart';
+import 'package:discussin_mobile/src/screen/home/home_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/widget/sign_in_failure.dart';
 import 'package:discussin_mobile/src/screen/sign_in/widget/sign_in_success.dart';
 import 'package:discussin_mobile/src/screen/sign_in/widget/text_field_password.dart';
@@ -206,13 +207,23 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
               switch (viewModel.actionState) {
                 case StateAction.none:
+                  Future.delayed(const Duration(milliseconds: 1000), () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const HomeScreen();
+                        },
+                      ),
+                    );
+                  });
                   return const SignInSuccess();
                 case StateAction.loading:
                   return _signInLoading();
                 case StateAction.error:
                   return SignInFailure(
                     message: viewModel.errorMessage ?? '',
-                    onPressed: () {},
+                    onPressed: () => Navigator.pop(context),
                   );
               }
             },
