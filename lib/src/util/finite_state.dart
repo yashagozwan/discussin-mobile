@@ -9,7 +9,7 @@ enum StateAction {
 mixin FiniteState on ChangeNotifier {
   StateAction actionState = StateAction.none;
 
-  void setActionState(StateAction newState) {
+  void setStateAction(StateAction newState) {
     actionState = newState;
     notifyListeners();
   }

@@ -12,12 +12,12 @@ class PostListNotifier extends ChangeNotifier with FiniteState {
   Iterable<Post> get posts => _posts;
 
   Future<void> loadPosts() async {
-    setActionState(StateAction.loading);
+    setStateAction(StateAction.loading);
     try {
       _posts = await _postService.getPosts();
-      setActionState(StateAction.none);
+      setStateAction(StateAction.none);
     } catch (e) {
-      setActionState(StateAction.error);
+      setStateAction(StateAction.error);
     }
   }
 }

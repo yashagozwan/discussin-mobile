@@ -12,12 +12,12 @@ class TopicNotifier extends ChangeNotifier with FiniteState {
   Iterable<Topic> get topics => _topics;
 
   Future<void> loadTopics() async {
-    setActionState(StateAction.loading);
+    setStateAction(StateAction.loading);
     try {
       _topics = await _postService.getTopics();
-      setActionState(StateAction.none);
+      setStateAction(StateAction.none);
     } catch (e) {
-      setActionState(StateAction.error);
+      setStateAction(StateAction.error);
     }
   }
 }
