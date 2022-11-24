@@ -22,15 +22,11 @@ class AuthService {
 
   Future<void> register(SignUp signUp) async {
     try {
-      final data = await _discussinApi.getClient().post(
-            '/api/v1/users/register',
-            data: signUp.toMap(),
-          );
-
-      print(data);
-    } on DioError catch (error) {
-      print(error.message);
-      print(error.response?.data['message']);
+      await _discussinApi
+          .getClient()
+          .post('/api/v1/users/register', data: signUp.toMap());
+    } on DioError {
+      rethrow;
     }
   }
 }
