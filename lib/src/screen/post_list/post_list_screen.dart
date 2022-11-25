@@ -21,9 +21,10 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Future<void> _initial() async {
     Future(() {
       final viewModel = ref.read(postListViewModel);
-      final topicviewModel = ref.read(topicViewModel);
+      // final topicviewModel = ref.read(topicViewModel);
       viewModel.loadPosts();
-      topicviewModel.loadTopics();
+      viewModel.loadTopics();
+      // topicviewModel.loadTopics();
     });
   }
 
@@ -57,18 +58,15 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: SizedBox(
                 height: 40,
                 child: Center(child: _buildTopicList()),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: SizedBox(
-                height: 570,
-                child: _buildList(),
-              ),
+            SizedBox(
+              height: 580,
+              child: _buildList(),
             ),
           ],
         ),
@@ -79,7 +77,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Widget _buildTopicList() {
     return Consumer(
       builder: (context, ref, child) {
-        final viewModel = ref.watch(topicViewModel);
+        final viewModel = ref.watch(postListViewModel);
         final topics = viewModel.topics;
         return ListView.separated(
           itemBuilder: (context, index) {
@@ -93,7 +91,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     });
                   },
                   child: Container(
-                    width: 100,
+                    width: 120,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -125,7 +123,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           scrollDirection: Axis.horizontal,
           separatorBuilder: (context, index) => const VerticalDivider(
             color: Colors.transparent,
-            width: 30,
+            width: 4,
           ),
           itemCount: viewModel.topics.length,
         );

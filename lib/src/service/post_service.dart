@@ -5,22 +5,32 @@ class PostService {
   Future<Iterable<Post>> getPosts() async {
     Iterable<Post> posts = [
       Post(
-        id: 123,
+        id: 10,
         name: 'Do you have unforgettable climbing experience?',
         description:
             'It all started back in 2008. I was in my second year of university, and one night my friend Megan decided that she wanted to go to a lecture about mountains as a ploy to meet hot guys, and she dragged me alone',
         userId: 12,
-        topicId: 44,
+        topicId: 1,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         isActive: true,
       ),
       Post(
-        id: 123,
+        id: 11,
         name: 'Do you have unforgettable climbing experience?',
         description:
             'It all started back in 2008. I was in my second year of university, and one night my friend Megan decided that she wanted to go to a lecture about mountains as a ploy to meet hot guys, and she dragged me alone',
         userId: 12,
-        topicId: 44,
+        topicId: 2,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        isActive: true,
+      ),
+      Post(
+        id: 12,
+        name: 'Do you have unforgettable climbing experience?',
+        description:
+            'It all started back in 2008. I was in my second year of university, and one night my friend Megan decided that she wanted to go to a lecture about mountains as a ploy to meet hot guys, and she dragged me alone',
+        userId: 12,
+        topicId: 3,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         isActive: true,
       ),
@@ -41,7 +51,23 @@ class PostService {
       Topic(
         id: 3,
         name: 'Games',
-      )
+      ),
+      Topic(
+        id: 4,
+        name: 'Tech',
+      ),
+      Topic(
+        id: 5,
+        name: 'Sport',
+      ),
+      Topic(
+        id: 6,
+        name: 'Programming',
+      ),
+      Topic(
+        id: 7,
+        name: 'Series',
+      ),
     ];
     return topics;
   }

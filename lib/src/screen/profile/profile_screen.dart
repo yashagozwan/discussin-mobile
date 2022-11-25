@@ -60,6 +60,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
 Widget editprofile() {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Stack(
         children: [
@@ -67,7 +68,7 @@ Widget editprofile() {
             padding: EdgeInsets.fromLTRB(30, 20, 0, 0),
             child: CachedNetworkImage(
               imageUrl: 'https://picsum.photos/250?image=9',
-              alignment: Alignment.center,
+              // alignment: Alignment.center,
               imageBuilder: (context, image) => CircleAvatar(
                 backgroundImage: image,
                 radius: 60,
