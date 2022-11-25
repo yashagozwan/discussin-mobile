@@ -1,6 +1,7 @@
 import 'package:discussin_mobile/src/screen/home/home_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/view_model/splash_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,13 +16,14 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   Future<void> _initial() async {
-    final isLogged = true;
+    final viewModel = ref.read(splashViewModel);
+    final token = await viewModel.getToken();
 
     await Future.delayed(
       const Duration(milliseconds: 4000),
     );
 
-    if (isLogged && mounted) {
+    if (token != null && mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
