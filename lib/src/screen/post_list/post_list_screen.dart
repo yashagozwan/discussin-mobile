@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../post_detail/post_detail_screen.dart';
+
 class PostListScreen extends ConsumerStatefulWidget {
   final int selectedTopic;
   const PostListScreen({Key? key, this.selectedTopic = 1}) : super(key: key);
@@ -21,9 +23,10 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Future<void> _initial() async {
     Future(() {
       final viewModel = ref.read(postListViewModel);
-      final topicviewModel = ref.read(topicViewModel);
+      // final topicviewModel = ref.read(topicViewModel);
       viewModel.loadPosts();
-      topicviewModel.loadTopics();
+      viewModel.loadTopics();
+      // topicviewModel.loadTopics();
     });
   }
 
@@ -57,18 +60,15 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: SizedBox(
                 height: 40,
                 child: Center(child: _buildTopicList()),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: SizedBox(
-                height: 570,
-                child: _buildList(),
-              ),
+            SizedBox(
+              height: 580,
+              child: _buildList(),
             ),
           ],
         ),
@@ -79,7 +79,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Widget _buildTopicList() {
     return Consumer(
       builder: (context, ref, child) {
-        final viewModel = ref.watch(topicViewModel);
+        final viewModel = ref.watch(postListViewModel);
         final topics = viewModel.topics;
         return ListView.separated(
           itemBuilder: (context, index) {
@@ -93,7 +93,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     });
                   },
                   child: Container(
-                    width: 100,
+                    width: 120,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -125,7 +125,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           scrollDirection: Axis.horizontal,
           separatorBuilder: (context, index) => const VerticalDivider(
             color: Colors.transparent,
-            width: 30,
+            width: 4,
           ),
           itemCount: viewModel.topics.length,
         );
@@ -214,7 +214,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           post.name,
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.justify,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -226,9 +226,14 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          post.description,
-                          textAlign: TextAlign.left,
+                        child: SizedBox(
+                          height: 100,
+                          child: Text(
+                            post.description,
+                            textAlign: TextAlign.justify,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                          ),
                         ),
                       ),
                     ],
@@ -258,14 +263,33 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                           const Text('10'),
                           Padding(
                             padding: const EdgeInsets.only(left: 85.0),
-                            child: Text.rich(
-                              TextSpan(
-                                text: "Read More",
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {},
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: primaryBlue,
+                            child: InkWell(
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              splashColor: Colors.black12,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return PostDetailScreen(post: post);
+                                    },
+                                  ),
+                                );
+                              },
+                              child: const SizedBox(
+                                width: 100,
+                                child: Center(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: "Read More",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: primaryBlue,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

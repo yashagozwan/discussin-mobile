@@ -208,13 +208,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               switch (viewModel.actionState) {
                 case StateAction.none:
                   Future.delayed(const Duration(milliseconds: 1000), () {
-                    Navigator.pushReplacement(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
                           return const HomeScreen();
                         },
                       ),
+                      (route) => false,
                     );
                   });
                   return const SignInSuccess();
