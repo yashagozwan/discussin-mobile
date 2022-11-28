@@ -3,73 +3,123 @@ import 'package:discussin_mobile/src/model/topic_model.dart';
 
 class PostService {
   Future<Iterable<Post>> getPosts() async {
-    Iterable<Post> posts = [
+    final posts = [
       Post(
-        id: 10,
-        name: 'Do you have unforgettable climbing experience?',
-        description:
+        id: 1,
+        title: 'Do you have unforgettable climbing experience?',
+        body:
             'It all started back in 2008. I was in my second year of university, and one night my friend Megan decided that she wanted to go to a lecture about mountains as a ploy to meet hot guys, and she dragged me alone, It all started back in 2008. I was in my second year of university, and one night my friend Megan decided that she wanted to go to a lecture about mountains as a ploy to meet hot guys, and she dragged me alonoe. To see Everest, one must go to a lookout called Tiger Hill, thirteen miles to the southeast.',
-        imageUrl: 'https://wallpaperaccess.com/full/223237.jpg',
-        userId: 12,
+        photo: 'https://wallpaperaccess.com/full/223237.jpg',
+        createAt: 12,
+        isActive: true,
         topicId: 1,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        isActive: true,
+        userId: 1,
+        comments: [],
+        topic: Topic(
+          id: 1,
+          name: 'Story',
+          description: 'Story is Story',
+          suspended: '',
+        ),
+        user: User(
+          id: 1,
+          email: 'pinkguy@gmail.com',
+          username: 'Pink Guy',
+          password: 'Pinkguy123',
+          photo:
+              'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a288e946906757.586a393b6be47.jpg',
+          banUntil: '',
+          isAdmin: false,
+        ),
       ),
       Post(
-        id: 11,
-        name: 'Did you know about Breakdance Lizard?',
-        description:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        imageUrl:
-            'https://images.pling.com/img/00/00/61/26/90/1536184/6337a702d0cd417543a99905b75ea7f0ce0332a8e2bd53fae2468b8e0ca92826bb0e.jpg',
-        userId: 12,
-        topicId: 2,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        isActive: true,
-      ),
-      Post(
-        id: 12,
-        name: 'Talk about Flutter',
-        description:
+        id: 2,
+        title: 'Talk about Flutter',
+        body:
             'Flutter is Google portable UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.',
-        imageUrl:
-            'https://www.kibrispdr.org/data/748/nature-wallpaper-hd-1080p-27.jpg',
-        userId: 12,
-        topicId: 3,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
+        photo:
+            'https://docs.flutter.dev/assets/images/flutter-logo-sharing.png',
+        createAt: 12,
         isActive: true,
+        topicId: 2,
+        userId: 2,
+        comments: [],
+        topic: Topic(
+          id: 2,
+          name: 'Programming',
+          description: 'Programming is Programming',
+          suspended: '',
+        ),
+        user: User(
+          id: 2,
+          email: 'pepefrog@gmail.com',
+          username: 'Pepe Frog',
+          password: 'Pepefrog123',
+          photo:
+              'https://www.whatspaper.com/wp-content/uploads/2022/01/hd-pepe-the-frog-wallpaper-whatspaper-11.jpg',
+          banUntil: '',
+          isAdmin: false,
+        ),
+      ),
+      Post(
+        id: 3,
+        title: 'Hey everyone, this is ilon Maa',
+        body:
+            'Elon Musk : China will never be able to replicate our technology, see the picture on my post Pfffffft!',
+        photo: 'https://img-9gag-fun.9cache.com/photo/a9qAKrW_700bwp.webp',
+        createAt: 12,
+        isActive: true,
+        topicId: 3,
+        userId: 3,
+        comments: [],
+        topic: Topic(
+          id: 3,
+          name: 'Meme',
+          description: 'Meme is Meme',
+          suspended: '',
+        ),
+        user: User(
+          id: 3,
+          email: 'leonardo@gmail.com',
+          username: 'Leonardo DiCaprio',
+          password: 'leonardo123',
+          photo:
+              'https://qph.cf2.quoracdn.net/main-qimg-2c29da64d653f126d5ebb9e67c9a7ad7-pjlq',
+          banUntil: '',
+          isAdmin: false,
+        ),
       ),
     ];
     return posts;
   }
 
-  Future<Iterable<Topic>> getTopics() async {
-    Iterable<Topic> topics = [
-      Topic(
+  Future<Iterable<MyTopic>> getTopics() async {
+    Iterable<MyTopic> topics = [
+      MyTopic(
         id: 1,
-        name: 'Popular',
+        name: 'All',
       ),
-      Topic(
+      MyTopic(
         id: 2,
-        name: 'New',
+        name: 'Programming',
       ),
-      Topic(
+      MyTopic(
         id: 3,
-        name: 'Games',
+        name: 'Meme',
       ),
-      Topic(
+      MyTopic(
         id: 4,
         name: 'Tech',
       ),
-      Topic(
+      MyTopic(
         id: 5,
         name: 'Sport',
       ),
-      Topic(
+      MyTopic(
         id: 6,
-        name: 'Programming',
+        name: 'Story',
       ),
-      Topic(
+      MyTopic(
         id: 7,
         name: 'Series',
       ),

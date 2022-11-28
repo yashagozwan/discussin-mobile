@@ -7,9 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class TopicNotifier extends ChangeNotifier with FiniteState {
   final _postService = PostService();
 
-  Iterable<Topic> _topics = [];
+  Iterable<MyTopic> _topics = [];
 
-  Iterable<Topic> get topics => _topics;
+  Iterable<MyTopic> get topics => _topics;
 
   Future<void> loadTopics() async {
     setStateAction(StateAction.loading);

@@ -1,8 +1,8 @@
-class Topic {
+class MyTopic {
   int id;
   String name;
 
-  Topic({
+  MyTopic({
     required this.id,
     required this.name,
   });

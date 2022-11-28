@@ -1,31 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
-import 'package:discussin_mobile/src/view_model/topic_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../post_detail/post_detail_screen.dart';
 
 class PostListScreen extends ConsumerStatefulWidget {
-  final int selectedTopic;
-  const PostListScreen({Key? key, this.selectedTopic = 1}) : super(key: key);
+  const PostListScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PostListScreenState();
 }
 
 class _PostListScreenState extends ConsumerState<PostListScreen> {
-  late int selectedTopic;
-
   Future<void> _initial() async {
     Future(() {
       final viewModel = ref.read(postListViewModel);
       // final topicviewModel = ref.read(topicViewModel);
       viewModel.loadPosts();
       viewModel.loadTopics();
+      // viewModel.loadPost2();
       // topicviewModel.loadTopics();
     });
   }
@@ -33,7 +30,6 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   @override
   void initState() {
     super.initState();
-    selectedTopic = widget.selectedTopic;
     _initial();
   }
 
@@ -88,35 +84,40 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      selectedTopic = topic.id;
-                    });
+                    viewModel.getPostByTopic(topic.name);
+                    viewModel.setSelectedTopic(topic.name);
                   },
-                  child: Container(
-                    width: 120,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: primaryBlue,
-                        style: BorderStyle.none,
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(25),
-                      ),
-                      color: (topic.id == selectedTopic)
-                          ? primaryBlue
-                          : Colors.transparent,
-                    ),
-                    child: Center(
-                      child: TextPro(
-                        topic.name,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: (topic.id == selectedTopic)
-                            ? Colors.white
-                            : primaryBlue,
-                      ),
-                    ),
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final viewModel = ref.watch(postListViewModel);
+                      final selectedTopic = viewModel.selectedTopic;
+                      return Container(
+                        width: 120,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: primaryBlue,
+                            style: BorderStyle.none,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(25),
+                          ),
+                          color: (topic.name == selectedTopic)
+                              ? primaryBlue
+                              : Colors.transparent,
+                        ),
+                        child: Center(
+                          child: TextPro(
+                            topic.name,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: (topic.name == selectedTopic)
+                                ? Colors.white
+                                : primaryBlue,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -146,8 +147,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                 ListTile(
                   leading: ClipRRect(
                     child: CachedNetworkImage(
-                      imageUrl:
-                          'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a288e946906757.586a393b6be47.jpg',
+                      imageUrl: post.user.photo ?? '',
                       imageBuilder: (context, imageProvider) => Container(
                         width: 60.0,
                         height: 60.0,
@@ -158,9 +158,12 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                         ),
                       ),
                       placeholder: (context, url) => const SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: Center(child: CircularProgressIndicator())),
+                        width: 60,
+                        height: 60,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
                       errorWidget: (context, url, error) => Container(
                         width: 60,
                         height: 60,
@@ -175,14 +178,14 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     ),
                   ),
                   title: Row(
-                    children: const [
+                    children: [
                       Text(
-                        'John Legend',
-                        style: TextStyle(
+                        post.user.username,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 8.0),
                         child: Text(
                           'Follow',
@@ -194,9 +197,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       ),
                     ],
                   ),
-                  subtitle: const Text(
-                    'College Student',
-                    style: TextStyle(
+                  subtitle: Text(
+                    post.topic.name,
+                    style: const TextStyle(
                       color: Colors.black,
                     ),
                   ),
@@ -213,7 +216,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          post.name,
+                          post.title,
                           textAlign: TextAlign.justify,
                           style: const TextStyle(
                             fontSize: 18,
@@ -229,7 +232,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                         child: SizedBox(
                           height: 100,
                           child: Text(
-                            post.description,
+                            post.body,
                             textAlign: TextAlign.justify,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5,

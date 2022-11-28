@@ -62,8 +62,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         ListTile(
           leading: ClipRRect(
             child: CachedNetworkImage(
-              imageUrl:
-                  'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a288e946906757.586a393b6be47.jpg',
+              imageUrl: post.user.photo.toString(),
               imageBuilder: (context, imageProvider) => Container(
                 width: 60.0,
                 height: 60.0,
@@ -90,14 +89,14 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
             ),
           ),
           title: Row(
-            children: const [
+            children: [
               Text(
-                'John Legend',
-                style: TextStyle(
+                post.user.username,
+                style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Text(
                   'Follow',
@@ -109,9 +108,9 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               ),
             ],
           ),
-          subtitle: const Text(
-            'College Student',
-            style: TextStyle(
+          subtitle: Text(
+            post.topic.name,
+            style: const TextStyle(
               color: Colors.black,
             ),
           ),
@@ -128,7 +127,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  post.name,
+                  post.title,
                   textAlign: TextAlign.justify,
                   style: const TextStyle(
                     fontSize: 18,
@@ -142,7 +141,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  post.description,
+                  post.body,
                   textAlign: TextAlign.justify,
                 ),
               ),
@@ -150,7 +149,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                 height: 10,
               ),
               CachedNetworkImage(
-                imageUrl: post.imageUrl.toString(),
+                imageUrl: post.photo.toString(),
                 imageBuilder: (context, imageProvider) => Container(
                   height: 220,
                   decoration: BoxDecoration(
