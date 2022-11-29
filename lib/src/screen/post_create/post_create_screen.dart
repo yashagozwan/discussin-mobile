@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:discussin_mobile/src/screen/home/home_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/view_model/home_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_create_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +83,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            onPressed: () {},
+            onPressed: _saveAction,
             child: const TextPro(
               'Discuss.In',
               color: deepBlue,
@@ -90,6 +92,43 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void _saveAction() async {
+    final viewModel = ref.watch(postCreateViewModel);
+    showDialog(
+      context: context,
+      builder: (context) {
+        Future.delayed(const Duration(milliseconds: 2000), () {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                const indexPostList = 0;
+                ref.read(homeViewModel).setSelectedIndexScreen(indexPostList);
+                return const HomeScreen();
+              },
+            ),
+          );
+        });
+
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              TextPro('Uploading...'),
+            ],
+          ),
+        );
+      },
     );
   }
 
