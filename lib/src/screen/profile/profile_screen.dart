@@ -19,7 +19,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          children: [
+          children: const [
             TextPro(
               'Profile',
               color: primaryBlue,
@@ -31,7 +31,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_none_outlined),
+            icon: const Icon(Icons.notifications_none_outlined),
             onPressed: () {},
           ),
           IconButton(
@@ -53,44 +53,207 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ],
       ),
-      body: editprofile(),
+      body: SingleChildScrollView(child: editprofile()),
     );
   }
 }
 
 Widget editprofile() {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 20, 0, 0),
-            child: CachedNetworkImage(
-              imageUrl: 'https://picsum.photos/250?image=9',
-              // alignment: Alignment.center,
-              imageBuilder: (context, image) => CircleAvatar(
-                backgroundImage: image,
-                radius: 60,
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                  child: CachedNetworkImage(
+                    imageUrl: 'https://picsum.photos/250?image=9',
+                    alignment: Alignment.center,
+                    imageBuilder: (context, image) => CircleAvatar(
+                      backgroundImage: image,
+                      radius: 60,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(100, 110, 0, 0),
+                  width: 45,
+                  height: 35,
+                  decoration: const BoxDecoration(
+                    color: Colors.yellow,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    iconSize: 22,
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {},
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "John Legend",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  const Text("Student Collage"),
+                  Row(
+                    children: const [
+                      Text("Followers : 25"),
+                      SizedBox(width: 15),
+                      Text("Following : 25")
+                    ],
+                  ),
+                  const Text("Joined Since 2018")
+                ],
               ),
+            )
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      ),
+      Container(
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: 360,
+          child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+              child: const Text("edit Profile")),
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.fromLTRB(30, 30, 0, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            Icon(
+              Icons.post_add,
+              size: 30,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text(
+              "Discuss created",
+              style: TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      ),
+      const Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Divider(
+          thickness: 1,
+          color: Colors.black45,
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.fromLTRB(30, 15, 0, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            Icon(
+              Icons.comment_bank_outlined,
+              size: 30,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text(
+              "Discuss that you joined",
+              style: TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      ),
+      const Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Divider(
+          thickness: 1,
+          color: Colors.black45,
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.fromLTRB(30, 15, 0, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            Icon(
+              Icons.edit_note,
+              size: 30,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text(
+              "Draft",
+              style: TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      ),
+      const Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Divider(
+          thickness: 1,
+          color: Colors.black45,
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+        child: InkWell(
+          splashColor: Colors.black45,
+          onTap: () {},
+          child: SizedBox(
+            width: 335,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                Icon(
+                  Icons.settings_outlined,
+                  size: 30,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  "Setting",
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(110, 110, 0, 0),
-            width: 45,
-            height: 35,
-            decoration: BoxDecoration(
-              color: Colors.yellow,
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              iconSize: 22,
-              icon: Icon(Icons.edit),
-              onPressed: () {},
-            ),
-          )
-        ],
-      )
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      ),
+      const Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Divider(
+          thickness: 1,
+          color: Colors.black45,
+        ),
+      ),
     ],
   );
 }
