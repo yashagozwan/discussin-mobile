@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart' show ChangeNotifier;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 class Profile {
   String username;

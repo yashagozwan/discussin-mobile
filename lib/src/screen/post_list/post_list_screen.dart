@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
@@ -48,7 +49,14 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           IconButton(
             icon: const Icon(Icons.notifications_none),
             color: primaryBlue,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PostNotificationScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),

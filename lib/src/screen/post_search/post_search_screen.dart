@@ -1,4 +1,5 @@
 import 'package:discussin_mobile/src/app.dart';
+import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/screen/post_search/widget/card_text.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/post_search_view_model.dart';
@@ -53,7 +54,14 @@ class _PostSearchScreenState extends ConsumerState<PostSearchScreen> {
       elevation: 0,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PostNotificationScreen(),
+              ),
+            );
+          },
           icon: const Icon(Icons.notifications_none),
         )
       ],

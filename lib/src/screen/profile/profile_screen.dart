@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/profile_view_model.dart';
@@ -18,6 +19,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: primaryBlue),
         title: Row(
           children: const [
             TextPro(
@@ -32,7 +34,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none_outlined),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PostNotificationScreen(),
+                ),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(
