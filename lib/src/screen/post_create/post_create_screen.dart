@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:discussin_mobile/src/screen/home/home_screen.dart';
+import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/view_model/home_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_create_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
@@ -19,14 +21,26 @@ class PostCreateScreen extends ConsumerStatefulWidget {
 }
 
 class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
-  final ImagePicker imagePicker = ImagePicker();
+  final ImagePicker _imagePicker = ImagePicker();
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  late final PostCreateNotifier viewModel;
+  final _bodyController = TextEditingController();
+  late final PostCreateNotifier _viewModel;
 
   Future<void> _initial() async {
     Future(() {
-      viewModel = ref.read(postCreateViewModel);
+      _viewModel = ref.read(postCreateViewModel);
+      _viewModel.getTopics();
+
+      _titleController.text = _viewModel.title;
+      _bodyController.text = _viewModel.body;
+
+      _titleController.addListener(() {
+        _viewModel.setTitle(_titleController.text);
+      });
+
+      _bodyController.addListener(() {
+        _viewModel.setBody(_bodyController.text);
+      });
     });
   }
 
@@ -40,7 +54,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
   void dispose() {
     super.dispose();
     _titleController.dispose();
-    _descriptionController.dispose();
+    _bodyController.dispose();
   }
 
   @override
@@ -91,7 +105,65 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
             ),
           ),
         ),
+        _resetField(),
       ],
+    );
+  }
+
+  Widget _resetField() {
+    final viewModel = ref.watch(postCreateViewModel);
+
+    if (viewModel.title.isEmpty && viewModel.body.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          foregroundColor: Colors.black26,
+          backgroundColor: yellow,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: const TextPro('Clear This Tread?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('No'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      viewModel.setTitle('');
+                      viewModel.setBody('');
+                      viewModel.setXFile(null);
+                      _titleController.clear();
+                      _bodyController.clear();
+                    },
+                    child: const Text('Yes'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: const TextPro(
+          'Reset',
+          color: deepBlue,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
     );
   }
 
@@ -100,33 +172,65 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        Future.delayed(const Duration(milliseconds: 2000), () {
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                const indexPostList = 0;
-                ref.read(homeViewModel).setSelectedIndexScreen(indexPostList);
-                return const HomeScreen();
-              },
-            ),
-          );
-        });
-
         return AlertDialog(
+          title: const TextPro('Publish This Tread?'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              TextPro('Uploading...'),
-            ],
+          content: Consumer(
+            builder: (context, ref, child) {
+              final viewModel = ref.watch(postCreateViewModel);
+              switch (viewModel.actionState) {
+                case StateAction.none:
+                  return const SizedBox.shrink();
+                case StateAction.loading:
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 16),
+                      TextPro('Uploading...'),
+                    ],
+                  );
+                case StateAction.error:
+                  return const SizedBox.shrink();
+              }
+            },
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final topicName = viewModel.topicName;
+                final post = PostModel(
+                  title: viewModel.title,
+                  body: viewModel.body,
+                );
+
+                final result = await viewModel.createPost(topicName, post);
+                if (result && mounted) {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        const indexPostList = 0;
+                        ref
+                            .read(homeViewModel)
+                            .setSelectedIndexScreen(indexPostList);
+                        return const HomeScreen();
+                      },
+                    ),
+                  );
+                }
+              },
+              child: const Text('Yes'),
+            ),
+          ],
         );
       },
     );
@@ -151,7 +255,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
                 ),
                 icon: const Icon(
                   Icons.group,
-                  color: Colors.white,
+                  color: Colors.transparent,
                 ),
                 elevation: 0,
                 value: viewModel.visibility,
@@ -210,41 +314,51 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
           Consumer(
             builder: (context, ref, child) {
               final viewModel = ref.watch(postCreateViewModel);
-              return DropdownButton(
-                dropdownColor: Colors.transparent,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-                icon: const Icon(
-                  Icons.group,
-                  color: Colors.white,
-                ),
-                elevation: 0,
-                value: viewModel.topic,
-                items: [
-                  ...viewModel.topics.map(
-                    (topic) => DropdownMenuItem(
-                      value: topic,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFCCD9F9),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: TextPro(topic),
-                      ),
+
+              switch (viewModel.actionState) {
+                case StateAction.none:
+                  return DropdownButton(
+                    focusColor: Colors.transparent,
+                    dropdownColor: Colors.transparent,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
                     ),
-                  )
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    viewModel.setTopic(value);
-                  }
-                },
-              );
+                    icon: const Icon(
+                      Icons.group,
+                      color: Colors.transparent,
+                    ),
+                    elevation: 0,
+                    value: viewModel.topicName,
+                    items: [
+                      ...viewModel.topics.map(
+                        (topic) => DropdownMenuItem(
+                          value: topic.name,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFCCD9F9),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: TextPro(topic.name),
+                          ),
+                        ),
+                      )
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        viewModel.setTopicName(value);
+                      }
+                    },
+                  );
+
+                case StateAction.loading:
+                  return const CircularProgressIndicator();
+                case StateAction.error:
+                  return const SizedBox.shrink();
+              }
             },
           )
         ],
@@ -281,10 +395,9 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
             ),
             maxLines: null,
           ),
-          const SizedBox(height: 8),
           TextField(
             keyboardType: TextInputType.multiline,
-            controller: _descriptionController,
+            controller: _bodyController,
             style: const TextStyle(
               height: 1.5,
             ),
@@ -442,24 +555,24 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
   void _startCamera() async {
     Navigator.pop(context);
 
-    final image = await imagePicker.pickImage(
+    final image = await _imagePicker.pickImage(
       source: ImageSource.camera,
     );
 
     if (image != null && mounted) {
-      viewModel.setXFile(image);
+      _viewModel.setXFile(image);
     }
   }
 
   void _startGallery() async {
     Navigator.pop(context);
 
-    final image = await imagePicker.pickImage(
+    final image = await _imagePicker.pickImage(
       source: ImageSource.gallery,
     );
 
     if (image != null && mounted) {
-      viewModel.setXFile(image);
+      _viewModel.setXFile(image);
     }
   }
 }

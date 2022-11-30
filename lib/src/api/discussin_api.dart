@@ -18,7 +18,7 @@ class _DioInterceptor extends Interceptor {
 }
 
 class DiscussinApi {
-  static const _baseUrl = 'http://35.78.120.202';
+  static const _baseUrl = 'http://35.78.120.202/api/v1';
 
   Dio getClient() {
     final dio = Dio();

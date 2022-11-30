@@ -15,7 +15,7 @@ void main() {
     test('Login', () async {
       try {
         final result = await authService.login(
-          SignIn(email: 'yasha@gmail.com', password: 'Mantap1234'),
+          SignIn(email: 'serizawa@gmail.com', password: '12345Mantap'),
         );
         print(result);
       } on DioError catch (e) {
@@ -27,11 +27,15 @@ void main() {
     test('Register', () async {
       try {
         final result = await authService.register(SignUp(
-          username: 'mariaozawa',
-          email: 'ozawa@gmail.com',
-          password: 'Mantap12345',
+          username: 'serizawa',
+          email: 'serizawa@gmail.com',
+          password: '12345Mantap',
+          isAdmin: true,
         ));
-      } on DioError catch (error) {}
+      } on DioError catch (error) {
+        print(error.message);
+        print(error.response?.data);
+      }
     });
   });
 }

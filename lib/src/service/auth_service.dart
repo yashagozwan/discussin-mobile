@@ -5,15 +5,11 @@ import 'package:discussin_mobile/src/model/sign_in_model.dart';
 import 'package:discussin_mobile/src/model/sign_up_model.dart';
 
 class AuthService {
-  final DiscussinApi _discussinApi = DiscussinApi();
+  final _client = DiscussinApi().getClient();
 
   Future<LoginResponse> login(SignIn signIn) async {
     try {
-      final response = await _discussinApi.getClient().post(
-            '/api/v1/users/login',
-            data: signIn.toMap(),
-          );
-
+      final response = await _client.post('/users/login', data: signIn.toMap());
       return LoginResponse.fromMap(response.data);
     } on DioError {
       rethrow;
@@ -22,9 +18,7 @@ class AuthService {
 
   Future<void> register(SignUp signUp) async {
     try {
-      await _discussinApi
-          .getClient()
-          .post('/api/v1/users/register', data: signUp.toMap());
+      await _client.post('/users/register', data: signUp.toMap());
     } on DioError {
       rethrow;
     }

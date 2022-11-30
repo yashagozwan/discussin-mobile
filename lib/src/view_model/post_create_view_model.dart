@@ -1,39 +1,81 @@
+import 'package:dio/dio.dart';
+import 'package:discussin_mobile/src/model/topic_response_model.dart';
+import 'package:discussin_mobile/src/service/post_service.dart';
+import 'package:discussin_mobile/src/service/topic_service.dart';
+import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PostCreateNotifier extends ChangeNotifier {
-  Iterable<String> topics = [
-    'Games',
-    'Anime',
-    'Film',
-    'Education',
-    'Music',
-  ];
-  String _visibility = 'public';
-  String _topic = 'Games';
+class PostCreateNotifier extends ChangeNotifier with FiniteState {
+  final _topicService = TopicService();
+  final _postService = PostService();
 
-  XFile? _xFile;
+  String get title => _title;
+  String _title = '';
+
+  void setTitle(String newTitle) {
+    _title = newTitle;
+    notifyListeners();
+  }
+
+  String get body => _body;
+  String _body = '';
+
+  void setBody(String newBody) {
+    _body = newBody;
+    notifyListeners();
+  }
 
   String get visibility => _visibility;
-
-  String get topic => _topic;
-
-  XFile? get xFile => _xFile;
+  String _visibility = 'public';
 
   void setVisibility(String visibility) {
     _visibility = visibility;
     notifyListeners();
   }
 
-  void setTopic(String topic) {
-    _topic = topic;
+  String get topicName => _topicName;
+  String _topicName = 'Anime';
+
+  void setTopicName(String newTopicName) {
+    _topicName = newTopicName;
     notifyListeners();
   }
 
-  void setXFile(XFile? xFile) {
-    _xFile = xFile;
+  Iterable<Topic> get topics => _topics;
+  Iterable<Topic> _topics = [];
+
+  Future<void> getTopics() async {
+    setStateAction(StateAction.loading);
+    try {
+      final results = await _topicService.getTopics();
+      _topics = results.data;
+      notifyListeners();
+      setStateAction(StateAction.none);
+    } on DioError catch (error) {
+      setStateAction(StateAction.error);
+    }
+  }
+
+  XFile? get xFile => _xFile;
+  XFile? _xFile;
+
+  void setXFile(XFile? newXFile) {
+    _xFile = newXFile;
     notifyListeners();
+  }
+
+  Future<bool> createPost(String topicName, PostModel post) async {
+    setStateAction(StateAction.loading);
+    try {
+      final result = await _postService.createPostByTopic(topicName, post);
+      setStateAction(StateAction.none);
+      return result;
+    } on DioError {
+      setStateAction(StateAction.error);
+      return false;
+    }
   }
 }
 

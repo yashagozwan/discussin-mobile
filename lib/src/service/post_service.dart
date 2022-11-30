@@ -1,7 +1,63 @@
+import 'package:dio/dio.dart';
+import 'package:discussin_mobile/src/api/discussin_api.dart';
 import 'package:discussin_mobile/src/model/post_model.dart';
+import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/model/topic_model.dart';
 
+class PostModel {
+  String title;
+  String photo;
+  String body;
+
+  PostModel({
+    required this.title,
+    this.photo = '',
+    required this.body,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'photo': photo,
+      'body': body,
+    };
+  }
+}
+
 class PostService {
+  final _client = DiscussinApi().getClient();
+
+  Future<void> getAllPost() async {
+    const token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJzZXJpemF3YSJ9.snMfk7HMsQNmBl-5yC9sbwTl6F1nFWtLjlTzoENEj7o';
+    _client.options.headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final results = await _client.get('/posts/recent');
+      print(results);
+    } on DioError {
+      rethrow;
+    }
+  }
+
+  Future<bool> createPostByTopic(String topicName, PostModel post) async {
+    try {
+      await _client.post('/posts/create/$topicName', data: post.toMap());
+      return true;
+    } on DioError {
+      rethrow;
+    }
+  }
+
+  Future<PostResponse> getPostsByTopic(String topicName) async {
+    try {
+      final results = await _client.get('/posts/all/$topicName');
+      return PostResponse.fromMap(results.data);
+    } on DioError {
+      rethrow;
+    }
+  }
+
   Future<Iterable<Post>> getPosts() async {
     final posts = [
       Post(
