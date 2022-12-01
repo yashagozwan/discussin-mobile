@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:discussin_mobile/src/model/sign_in_model.dart';
+import 'package:discussin_mobile/src/screen/forget_password/forget_password_screen.dart';
 import 'package:discussin_mobile/src/screen/home/home_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/widget/sign_in_failure.dart';
 import 'package:discussin_mobile/src/screen/sign_in/widget/sign_in_success.dart';
@@ -120,7 +121,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     child: Text.rich(
                       TextSpan(
                         text: "Forget Password?",
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const ForgetPassword();
+                                  },
+                                ),
+                              );
+                            },
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF285FE7),
