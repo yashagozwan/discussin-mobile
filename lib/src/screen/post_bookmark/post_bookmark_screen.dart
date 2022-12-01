@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,7 +31,14 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
           IconButton(
             icon: const Icon(Icons.notifications_none),
             color: primaryBlue,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PostNotificationScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
