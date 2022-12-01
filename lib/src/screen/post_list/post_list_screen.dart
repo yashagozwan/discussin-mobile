@@ -229,14 +229,11 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          height: 100,
-                          child: Text(
-                            post.body,
-                            textAlign: TextAlign.justify,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                          ),
+                        child: Text(
+                          post.body,
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5,
                         ),
                       ),
                     ],
@@ -247,50 +244,51 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.thumb_up_alt_outlined),
-                            onPressed: () {},
-                          ),
-                          const Text('10'),
-                          IconButton(
-                            icon: const Icon(Icons.thumb_down_alt_outlined),
-                            onPressed: () {},
-                          ),
-                          const Text('10'),
-                          IconButton(
-                            icon: const Icon(Icons.comment_outlined),
-                            onPressed: () {},
-                          ),
-                          const Text('10'),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 85.0),
-                            child: InkWell(
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.thumb_up_alt_outlined),
+                                onPressed: () {},
                               ),
-                              splashColor: Colors.black12,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return PostDetailScreen(post: post);
-                                    },
-                                  ),
-                                );
-                              },
-                              child: const SizedBox(
-                                width: 100,
-                                child: Center(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      text: "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: primaryBlue,
-                                      ),
+                              const Text('10'),
+                              IconButton(
+                                icon: const Icon(Icons.thumb_down_alt_outlined),
+                                onPressed: () {},
+                              ),
+                              const Text('10'),
+                              IconButton(
+                                icon: const Icon(Icons.comment_outlined),
+                                onPressed: () {},
+                              ),
+                              const Text('10'),
+                            ],
+                          ),
+                          InkWell(
+                            customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            splashColor: Colors.black12,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return PostDetailScreen(post: post);
+                                  },
+                                ),
+                              );
+                            },
+                            child: const SizedBox(
+                              width: 100,
+                              child: Center(
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: "Read More",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: primaryBlue,
                                     ),
                                   ),
                                 ),
