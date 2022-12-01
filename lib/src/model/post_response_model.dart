@@ -10,8 +10,8 @@ class PostResponse {
   factory PostResponse.fromMap(Map<String, dynamic> data) {
     var posts = <PostData>[];
 
-    if (data['data'] != null) {
-      final mapPosts = data['data'] as List;
+    if (data['data_post'] != null) {
+      final mapPosts = data['data_post'] as List;
       if (mapPosts.isNotEmpty) {
         posts = mapPosts.map((e) => PostData.fromMap(e)).toList();
       }

@@ -15,9 +15,10 @@ void main() {
     test('Login', () async {
       try {
         final result = await authService.login(
-          SignIn(email: 'serizawa@gmail.com', password: '12345Mantap'),
+          SignIn(email: 'yukino@gmail.com', password: '12345Mantap'),
         );
-        print(result);
+
+        print(result.data.token);
       } on DioError catch (e) {
         print(e.message);
         print(e.response?.data);
@@ -27,11 +28,13 @@ void main() {
     test('Register', () async {
       try {
         final result = await authService.register(SignUp(
-          username: 'serizawa',
-          email: 'serizawa@gmail.com',
+          username: 'yukino',
+          email: 'yukino@gmail.com',
           password: '12345Mantap',
           isAdmin: true,
         ));
+
+        print(result);
       } on DioError catch (error) {
         print(error.message);
         print(error.response?.data);

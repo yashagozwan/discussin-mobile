@@ -20,11 +20,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Future<void> _initial() async {
     Future(() {
       final viewModel = ref.read(postListViewModel);
-      // final topicviewModel = ref.read(topicViewModel);
       viewModel.loadPosts();
       viewModel.loadTopics();
-      // viewModel.loadPost2();
-      // topicviewModel.loadTopics();
+      viewModel.getAllPost();
     });
   }
 
@@ -179,7 +177,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(100)),
                           image: DecorationImage(
                             image: AssetImage(
-                                'assets/images/Image-not-available.png'),
+                              'assets/images/Image-not-available.png',
+                            ),
                           ),
                         ),
                       ),

@@ -13,10 +13,14 @@ Future<void> main() async {
 
     test('Create Topic', () async {
       try {
-        final topic =
-            Topic(name: 'Music', description: 'Music is my favorite song');
+        final topic = Topic(
+          name: 'Game',
+          description: 'Game is my favorite GTA',
+        );
 
-        final results = await topicService.insertOne(topic);
+        final results = await topicService.createTopic(topic);
+
+        print(results);
       } on DioError catch (error) {
         print(error.message);
         print(error.response?.data);

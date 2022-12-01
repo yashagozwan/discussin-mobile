@@ -11,15 +11,7 @@ Future<void> main() async {
     });
 
     test('Create Post', () async {
-      try {
-        const topic = 'Programming';
-        final post = PostModel(
-          title: 'Dart Programming',
-          body:
-              'Flutter adalah framework popular untuk membangun cross-platforms mobile app',
-        );
-        final results = await postService.createPostByTopic(topic, post);
-      } on DioError catch (error) {
+      try {} on DioError catch (error) {
         print(error.message);
         print(error.response?.data);
       }
@@ -27,7 +19,8 @@ Future<void> main() async {
 
     test('Get All Post', () async {
       try {
-        final results = await postService.getAllPost();
+        final result = await postService.getAllPost();
+        print(result);
       } on DioError catch (error) {
         print(error.message);
         print(error.response?.data);

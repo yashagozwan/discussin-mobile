@@ -2,17 +2,22 @@ import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/api/discussin_api.dart';
 import 'package:discussin_mobile/src/model/topic_response_model.dart';
 
+class Model {}
+
+final bookmarks = [];
+
 class TopicService {
   final _client = DiscussinApi().getClient();
 
-  Future<void> insertOne(Topic topic) async {
+  Future<bool> createTopic(Topic topic) async {
     const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJzZXJpemF3YSJ9.snMfk7HMsQNmBl-5yC9sbwTl6F1nFWtLjlTzoENEj7o';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzAwMDE0NDMsImlkIjoxMSwidXNlcm5hbWUiOiJ5dWtpbm8ifQ.rW7otzk5Gg_tgTylBOoNJQNFUeSTlLkbFgjOSje3xag';
+
     _client.options.headers['Authorization'] = 'Bearer $token';
 
     try {
-      final results = await _client.post('/topics/create', data: topic.toMap());
-      print(results);
+      await _client.post('/topics/create', data: topic.toMap());
+      return true;
     } on DioError {
       rethrow;
     }
