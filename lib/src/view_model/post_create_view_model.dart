@@ -1,3 +1,4 @@
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/model/topic_response_model.dart';
 import 'package:discussin_mobile/src/service/post_service.dart';
@@ -69,11 +70,19 @@ class PostCreateNotifier extends ChangeNotifier with FiniteState {
   Future<bool> createPost(String topicName, PostModel post) async {
     setStateAction(StateAction.loading);
     try {
+      if (xFile != null) {
+        final imageUrl = await _postService.uploadImage(xFile!);
+        post.photo = imageUrl;
+      }
+
       final result = await _postService.createPostByTopic(topicName, post);
       setStateAction(StateAction.none);
       return result;
     } on DioError {
       setStateAction(StateAction.error);
+      return false;
+    } on CloudinaryException catch (error) {
+      print(error.message);
       return false;
     }
   }

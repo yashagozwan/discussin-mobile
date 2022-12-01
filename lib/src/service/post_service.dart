@@ -1,8 +1,10 @@
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/api/discussin_api.dart';
 import 'package:discussin_mobile/src/model/post_model.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/model/topic_model.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostModel {
   String title;
@@ -26,15 +28,25 @@ class PostModel {
 
 class PostService {
   final _client = DiscussinApi().getClient();
+  final cloudinary = CloudinaryPublic("dk0q3rmmm", 'jbirjtf7', cache: false);
 
-  Future<void> getAllPost() async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJzZXJpemF3YSJ9.snMfk7HMsQNmBl-5yC9sbwTl6F1nFWtLjlTzoENEj7o';
-    _client.options.headers['Authorization'] = 'Bearer $token';
-
+  Future<String> uploadImage(XFile xFile) async {
     try {
-      final results = await _client.get('/posts/recent');
-      print(results);
+      final result = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(xFile.path,
+            resourceType: CloudinaryResourceType.Image),
+      );
+
+      return result.url;
+    } on CloudinaryException {
+      rethrow;
+    }
+  }
+
+  Future<PostResponse> getAllPost() async {
+    try {
+      final results = await _client.get('/posts/all');
+      return PostResponse.fromMap(results.data);
     } on DioError {
       rethrow;
     }

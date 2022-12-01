@@ -16,9 +16,10 @@ class AuthService {
     }
   }
 
-  Future<void> register(SignUp signUp) async {
+  Future<bool> register(SignUp signUp) async {
     try {
       await _client.post('/users/register', data: signUp.toMap());
+      return true;
     } on DioError {
       rethrow;
     }
