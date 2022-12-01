@@ -20,9 +20,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Future<void> _initial() async {
     Future(() {
       final viewModel = ref.read(postListViewModel);
-      viewModel.loadPosts();
-      viewModel.loadTopics();
       viewModel.getAllPost();
+      viewModel.getTopics();
     });
   }
 
@@ -82,7 +81,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final viewModel = ref.watch(postListViewModel);
-        final topics = viewModel.topics;
+        final topics = viewModel.uniqueTopics;
         return ListView.separated(
           itemBuilder: (context, index) {
             final topic = topics.elementAt(index);
@@ -134,7 +133,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
             color: Colors.transparent,
             width: 4,
           ),
-          itemCount: viewModel.topics.length,
+          itemCount: topics.length,
         );
       },
     );
@@ -144,16 +143,16 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final viewModel = ref.watch(postListViewModel);
-        final posts = viewModel.posts;
+        final newPosts = viewModel.newPosts;
         return ListView.separated(
           itemBuilder: (context, index) {
-            final post = posts.elementAt(index);
+            final post = newPosts.elementAt(index);
             return Column(
               children: [
                 ListTile(
                   leading: ClipRRect(
                     child: CachedNetworkImage(
-                      imageUrl: post.user.photo ?? '',
+                      imageUrl: '',
                       imageBuilder: (context, imageProvider) => Container(
                         width: 60.0,
                         height: 60.0,
@@ -185,14 +184,14 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     ),
                   ),
                   title: Row(
-                    children: [
+                    children: const [
                       Text(
-                        post.user.username,
-                        style: const TextStyle(
+                        'Harry Potter',
+                        style: TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 8.0),
                         child: Text(
                           'Follow',
@@ -204,9 +203,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       ),
                     ],
                   ),
-                  subtitle: Text(
-                    post.topic.name,
-                    style: const TextStyle(
+                  subtitle: const Text(
+                    'Topic',
+                    style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
@@ -311,7 +310,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
             );
           },
           separatorBuilder: (context, index) => const SizedBox(),
-          itemCount: viewModel.posts.length,
+          itemCount: newPosts.length,
         );
       },
     );

@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:discussin_mobile/src/model/post_model.dart';
+import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostDetailScreen extends ConsumerStatefulWidget {
-  final Post post;
+  final PostData post;
   const PostDetailScreen({Key? key, required this.post}) : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class PostDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
-  late Post post;
+  late PostData post;
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         ListTile(
           leading: ClipRRect(
             child: CachedNetworkImage(
-              imageUrl: post.user.photo.toString(),
+              imageUrl: '',
               imageBuilder: (context, imageProvider) => Container(
                 width: 60.0,
                 height: 60.0,
@@ -89,14 +89,14 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
             ),
           ),
           title: Row(
-            children: [
+            children: const [
               Text(
-                post.user.username,
-                style: const TextStyle(
+                'Harry Potter',
+                style: TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Text(
                   'Follow',
@@ -108,9 +108,9 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               ),
             ],
           ),
-          subtitle: Text(
-            post.topic.name,
-            style: const TextStyle(
+          subtitle: const Text(
+            'Topic',
+            style: TextStyle(
               color: Colors.black,
             ),
           ),
