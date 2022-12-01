@@ -1,4 +1,3 @@
-import 'package:discussin_mobile/src/app.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/screen/post_search/widget/card_text.dart';
 import 'package:discussin_mobile/src/util/colors.dart';

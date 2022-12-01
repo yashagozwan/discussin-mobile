@@ -70,11 +70,6 @@ class PostCreateNotifier extends ChangeNotifier with FiniteState {
   Future<bool> createPost(String topicName, PostModel post) async {
     setStateAction(StateAction.loading);
     try {
-      if (xFile != null) {
-        final imageUrl = await _postService.uploadImage(xFile!);
-        post.photo = imageUrl;
-      }
-
       final result = await _postService.createPostByTopic(topicName, post);
       setStateAction(StateAction.none);
       return result;
