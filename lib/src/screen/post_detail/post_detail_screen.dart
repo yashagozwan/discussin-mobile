@@ -148,30 +148,34 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               const SizedBox(
                 height: 10,
               ),
-              CachedNetworkImage(
-                imageUrl: post.photo.toString(),
-                imageBuilder: (context, imageProvider) => Container(
-                  height: 220,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover),
-                  ),
-                ),
-                placeholder: (context, url) => const SizedBox(
-                    height: 220,
-                    child: Center(child: CircularProgressIndicator())),
-                errorWidget: (context, url, error) => Container(
-                  height: 220,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
-                    image: DecorationImage(
-                      image:
-                          AssetImage('assets/images/Image-not-available.png'),
-                    ),
-                  ),
-                ),
-              ),
+              post.photo.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: post.photo.toString(),
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 220,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) => const SizedBox(
+                          height: 220,
+                          child: Center(child: CircularProgressIndicator())),
+                      errorWidget: (context, url, error) => Container(
+                        height: 220,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/Image-not-available.png'),
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
