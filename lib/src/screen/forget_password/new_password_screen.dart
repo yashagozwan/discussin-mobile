@@ -1,18 +1,15 @@
-import 'package:discussin_mobile/src/screen/forget_password/auth_forget_screen.dart';
-import 'package:discussin_mobile/src/screen/forget_password/new_password_screen.dart';
-import 'package:discussin_mobile/src/screen/profile/profile_screen.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ForgetPassword extends ConsumerStatefulWidget {
-  const ForgetPassword({super.key});
+class NewPass extends ConsumerStatefulWidget {
+  const NewPass({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ForgetPasswordState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewPassState();
 }
 
-class _ForgetPasswordState extends ConsumerState<ForgetPassword> {
+class _NewPassState extends ConsumerState<NewPass> {
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +20,17 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword> {
           color: Colors.black, //change your color here
         ),
         backgroundColor: Colors.white,
-        title: const TextPro("Forgot Password",
+        title: const TextPro("Create New Password",
         fontWeight: FontWeight.w600,
         ),
         elevation: 0,
       ),
-      body: SingleChildScrollView(child: forgetPass()),
+      body: SingleChildScrollView(child: inputPass()),
     );
   }
-  Widget forgetPass() {
-  return Form(
+
+  Widget inputPass() {
+    return Form(
     child: Center(
       child: Padding(
         padding: EdgeInsets.all(30),
@@ -47,15 +45,16 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword> {
                       scale: 1,
                     ),
                   ),
-            const TextPro("Please enter your email to receive a verification card",
+            const TextPro("Your new password must be different from previously used password",
               fontWeight: FontWeight.w600,
             ),
             const SizedBox(height: 20,),
             const TextPro(
-              'Email',
+              'New Password',
               textAlign: TextAlign.start,
               fontWeight: FontWeight.w600,
             ),
+            const SizedBox(height: 5),
             TextFormField(
                     decoration: InputDecoration(
                       filled: true,
@@ -65,7 +64,33 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword> {
                         horizontal: 4,
                       ),
                       isDense: true,
-                      hintText: 'Your E-mail Address',
+                      hintText: 'New Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                    ),
+                  ),
+            const SizedBox(height: 20),
+            const TextPro(
+              'Confirm Password',
+              textAlign: TextAlign.start,
+              fontWeight: FontWeight.w600,
+            ),
+            const SizedBox(height: 5),
+            TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFFCCD9F9),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 4,
+                      ),
+                      isDense: true,
+                      hintText: 'Confirm Password',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: const BorderSide(
@@ -77,16 +102,7 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword> {
                   ),
             const SizedBox(height: 30),
             ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const AuthCode();
-                                  },
-                                ),
-                              );
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xffFBEB23),
                       foregroundColor: Colors.black54,
@@ -108,5 +124,4 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword> {
         ),
       );
     }
-}
-
+  }
