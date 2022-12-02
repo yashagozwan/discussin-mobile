@@ -175,10 +175,10 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(100)),
                           image: DecorationImage(
-                            image: AssetImage(
-                              'assets/images/Image-not-available.png',
-                            ),
-                          ),
+                              image: NetworkImage(
+                                'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
+                              ),
+                              fit: BoxFit.cover),
                         ),
                       ),
                     ),
@@ -187,11 +187,11 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     children: [
                       Text(
                         post.user.username,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 8.0),
                         child: Text(
                           'Follow',
@@ -203,11 +203,33 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       ),
                     ],
                   ),
-                  subtitle: const Text(
-                    'Topic',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
+                  subtitle: Row(
+                    children: [
+                      Text(
+                        post.topic.name,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text(
+                        '-',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text(
+                        '3 Min Ago',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.bookmark_outline),
