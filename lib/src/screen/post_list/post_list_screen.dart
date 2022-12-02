@@ -184,9 +184,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     ),
                   ),
                   title: Row(
-                    children: const [
+                    children: [
                       Text(
-                        'Harry Potter',
+                        post.user.username,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                         ),

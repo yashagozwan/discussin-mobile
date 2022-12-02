@@ -45,7 +45,7 @@ class PostService {
 
   Future<PostResponse> getAllPost() async {
     try {
-      final results = await _client.get('/posts/all');
+      final results = await _client.get('/posts/recents');
       return PostResponse.fromMap(results.data);
     } on DioError {
       rethrow;

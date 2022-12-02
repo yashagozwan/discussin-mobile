@@ -11,8 +11,8 @@ class TopicResponse {
   factory TopicResponse.fromMap(Map<String, dynamic> data) {
     Iterable<Topic> topics = [];
 
-    if (data['data_topic'] != null) {
-      final mapTopics = data['data_topic'] as List;
+    if (data['data'] != null) {
+      final mapTopics = data['data'] as List;
       if (mapTopics.isNotEmpty) {
         topics = mapTopics.map((topic) => Topic.fromMap(topic));
       }

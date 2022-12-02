@@ -1,9 +1,5 @@
-import 'dart:collection';
-
 import 'package:dio/dio.dart';
-import 'package:discussin_mobile/src/model/post_model.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
-import 'package:discussin_mobile/src/model/topic_model.dart';
 import 'package:discussin_mobile/src/model/topic_response_model.dart' as tpc;
 import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/service/topic_service.dart';
@@ -35,15 +31,15 @@ class PostListNotifier extends ChangeNotifier with FiniteState {
   Iterable<tpc.Topic> get newTopics => _newTopics;
   Iterable<tpc.Topic> _newTopics = [];
 
-  Queue<tpc.Topic> get uniqueTopics => _uniqueTopics;
-  final Queue<tpc.Topic> _uniqueTopics = Queue();
+  Set<tpc.Topic> get uniqueTopics => _uniqueTopics;
+  final Set<tpc.Topic> _uniqueTopics = {};
 
   Future<void> getTopics() async {
     try {
       final result = await _topicService.getTopics();
       _newTopics = result.data;
+      _uniqueTopics.add(tpc.Topic(name: 'All', description: ''));
       _uniqueTopics.addAll(result.data);
-      _uniqueTopics.addFirst(tpc.Topic(name: 'All', description: ''));
       notifyListeners();
     } on DioError catch (error) {
       print(error.response?.data);
