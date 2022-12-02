@@ -557,6 +557,8 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
 
     final image = await _imagePicker.pickImage(
       source: ImageSource.camera,
+      maxHeight: 500,
+      maxWidth: 500,
     );
 
     if (image != null && mounted) {
@@ -569,6 +571,8 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
 
     final image = await _imagePicker.pickImage(
       source: ImageSource.gallery,
+      maxHeight: 500,
+      maxWidth: 500,
     );
 
     if (image != null && mounted) {
