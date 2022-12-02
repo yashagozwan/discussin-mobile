@@ -81,7 +81,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final viewModel = ref.watch(postListViewModel);
-        final topics = viewModel.uniqueTopics;
+        final topics = viewModel.topics;
         return ListView.separated(
           itemBuilder: (context, index) {
             final topic = topics.elementAt(index);
@@ -143,10 +143,10 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final viewModel = ref.watch(postListViewModel);
-        final newPosts = viewModel.newPosts;
+        final posts = viewModel.posts;
         return ListView.separated(
           itemBuilder: (context, index) {
-            final post = newPosts.elementAt(index);
+            final post = posts.elementAt(index);
             return Column(
               children: [
                 ListTile(
@@ -310,7 +310,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
             );
           },
           separatorBuilder: (context, index) => const SizedBox(),
-          itemCount: newPosts.length,
+          itemCount: posts.length,
         );
       },
     );

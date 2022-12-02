@@ -15,31 +15,26 @@ class PostListNotifier extends ChangeNotifier with FiniteState {
 
   String get selectedTopic => _selectedTopic;
 
-  Iterable<PostData> get newPosts => _newPosts;
-  Iterable<PostData> _newPosts = [];
+  Iterable<PostData> get posts => _posts;
+  Iterable<PostData> _posts = [];
 
   Future<void> getAllPost() async {
     try {
       final result = await _postService.getAllPost();
-      _newPosts = result.data;
+      _posts = result.data;
       notifyListeners();
     } on DioError catch (error) {
       print(error.response?.data);
     }
   }
 
-  Iterable<tpc.Topic> get newTopics => _newTopics;
-  Iterable<tpc.Topic> _newTopics = [];
-
-  Set<tpc.Topic> get uniqueTopics => _uniqueTopics;
-  final Set<tpc.Topic> _uniqueTopics = {};
+  Iterable<tpc.Topic> get topics => _topics;
+  Iterable<tpc.Topic> _topics = [];
 
   Future<void> getTopics() async {
     try {
       final result = await _topicService.getTopics();
-      _newTopics = result.data;
-      _uniqueTopics.add(tpc.Topic(name: 'All', description: ''));
-      _uniqueTopics.addAll(result.data);
+      _topics = {tpc.Topic(name: 'All', description: ''), ...result.data};
       notifyListeners();
     } on DioError catch (error) {
       print(error.response?.data);
