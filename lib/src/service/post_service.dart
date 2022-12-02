@@ -1,10 +1,8 @@
-import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/api/discussin_api.dart';
 import 'package:discussin_mobile/src/model/post_model.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/model/topic_model.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PostModel {
   String title;
@@ -28,20 +26,6 @@ class PostModel {
 
 class PostService {
   final _client = DiscussinApi().getClient();
-  final cloudinary = CloudinaryPublic("dk0q3rmmm", 'jbirjtf7', cache: false);
-
-  Future<String> uploadImage(XFile xFile) async {
-    try {
-      final result = await cloudinary.uploadFile(
-        CloudinaryFile.fromFile(xFile.path,
-            resourceType: CloudinaryResourceType.Image),
-      );
-
-      return result.url;
-    } on CloudinaryException {
-      rethrow;
-    }
-  }
 
   Future<PostResponse> getAllPost() async {
     try {
