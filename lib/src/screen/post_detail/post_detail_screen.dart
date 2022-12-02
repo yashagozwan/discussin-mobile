@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
+import 'package:discussin_mobile/src/screen/post_detail/widget/comment_list.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 1000,
+              height: 1200,
               child: _buildPostDetail(),
             ),
           ],
@@ -206,6 +207,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
             ],
           ),
         ),
+        const CommentList()
       ],
     );
   }

@@ -44,6 +44,7 @@ dependencies:
   dio: ^4.0.6
   image_picker: ^0.8.6
   cloudinary_sdk: ^4.0.2+10
+  comment_tree: ^0.3.0
 
 dev_dependencies:
   flutter_test:
