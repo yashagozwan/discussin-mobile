@@ -152,7 +152,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                 ListTile(
                   leading: ClipRRect(
                     child: CachedNetworkImage(
-                      imageUrl: '',
+                      imageUrl:
+                          'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
                       imageBuilder: (context, imageProvider) => Container(
                         width: 60.0,
                         height: 60.0,
@@ -280,17 +281,17 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                                 icon: const Icon(Icons.thumb_up_alt_outlined),
                                 onPressed: () {},
                               ),
-                              const Text('10'),
+                              Text(post.count.like.toString()),
                               IconButton(
                                 icon: const Icon(Icons.thumb_down_alt_outlined),
                                 onPressed: () {},
                               ),
-                              const Text('10'),
+                              Text(post.count.dislike.toString()),
                               IconButton(
                                 icon: const Icon(Icons.comment_outlined),
                                 onPressed: () {},
                               ),
-                              const Text('10'),
+                              Text(post.count.comment.toString()),
                             ],
                           ),
                           InkWell(

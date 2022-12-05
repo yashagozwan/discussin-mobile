@@ -1,192 +1,187 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_tree/data/comment.dart';
 import 'package:comment_tree/widgets/comment_tree_widget.dart';
 import 'package:comment_tree/widgets/tree_theme_data.dart';
+import 'package:discussin_mobile/src/model/comment_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CommentList extends ConsumerStatefulWidget {
-  const CommentList({super.key});
+  final Iterable<CommentData> comments;
+  const CommentList({super.key, required this.comments});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CommentListState();
 }
 
 class _CommentListState extends ConsumerState<CommentList> {
-  final _commentController = TextEditingController();
+  late Iterable<CommentData> comments;
+  Future<void> _initial() async {
+    comments = widget.comments;
+    Future(() {});
+  }
 
   @override
-  void dispose() {
-    super.dispose();
-    _commentController.dispose();
+  void initState() {
+    _initial();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          leading: const CircleAvatar(
-            radius: 18,
-            backgroundColor: Colors.grey,
-            backgroundImage: AssetImage('assets/avatar_2.png'),
-          ),
-          title: TextFormField(
-            controller: _commentController,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.transparent,
-              isDense: true,
-              hintText: 'Leave Comment',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide: const BorderSide(
-                  width: 0,
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      shrinkWrap: true,
+      itemCount: comments.length,
+      itemBuilder: (context, index) {
+        final comment = comments.elementAt(index);
+        return CommentTreeWidget<Comment, Comment>(
+          Comment(
+              avatar: comment.user.photo,
+              userName: comment.user.username,
+              content: comment.body),
+          const [],
+          treeThemeData:
+              const TreeThemeData(lineColor: Colors.transparent, lineWidth: 3),
+          avatarRoot: (context, data) => PreferredSize(
+            preferredSize: const Size.fromRadius(18),
+            child: CachedNetworkImage(
+              imageUrl:
+                  'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
+              imageBuilder: (context, imageProvider) => Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image:
+                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+              placeholder: (context, url) => const SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Center(child: CircularProgressIndicator())),
+              errorWidget: (context, url, error) => Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/Image-not-available.png'),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          child: CommentTreeWidget<Comment, Comment>(
-            Comment(
-                avatar: 'null',
-                userName: 'null',
-                content: 'felangel made felangel/cubit_and_beyond public'),
-            [
-              Comment(
-                  avatar: 'null',
-                  userName: 'null',
-                  content: 'A Dart template generator which helps teams'),
-              Comment(
-                  avatar: 'null',
-                  userName: 'null',
-                  content:
-                      'A Dart template generator which helps teams generator which helps teams generator which helps teams'),
-              Comment(
-                  avatar: 'null',
-                  userName: 'null',
-                  content: 'A Dart template generator which helps teams'),
-              Comment(
-                  avatar: 'null',
-                  userName: 'null',
-                  content:
-                      'A Dart template generator which helps teams generator which helps teams'),
-            ],
-            treeThemeData: const TreeThemeData(
-              lineColor: Colors.transparent,
+          avatarChild: (context, data) => const PreferredSize(
+            preferredSize: Size.fromRadius(12),
+            child: CircleAvatar(
+              radius: 12,
+              backgroundColor: Colors.grey,
             ),
-            avatarRoot: (context, data) => const PreferredSize(
-              preferredSize: Size.fromRadius(18),
-              child: CircleAvatar(
-                radius: 18,
-                backgroundColor: Colors.grey,
-                backgroundImage: AssetImage('assets/avatar_2.png'),
-              ),
-            ),
-            avatarChild: (context, data) => const PreferredSize(
-              preferredSize: Size.fromRadius(12),
-              child: CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.grey,
-                backgroundImage: AssetImage('assets/avatar_1.png'),
-              ),
-            ),
-            contentChild: (context, data) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'dangngocduc',
-                          style: Theme.of(context).textTheme.caption?.copyWith(
-                              fontWeight: FontWeight.w600, color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          '${data.content}',
-                          style: Theme.of(context).textTheme.caption?.copyWith(
-                              fontWeight: FontWeight.w300, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                  DefaultTextStyle(
-                    style: Theme.of(context).textTheme.caption!.copyWith(
-                        color: Colors.grey[700], fontWeight: FontWeight.bold),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Row(
-                        children: const [
-                          SizedBox(
-                            width: 24,
-                          ),
-                          Text('Reply'),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              );
-            },
-            contentRoot: (context, data) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'dangngocduc',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontWeight: FontWeight.w600, color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          '${data.content}',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontWeight: FontWeight.w300, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                  DefaultTextStyle(
-                    style: Theme.of(context).textTheme.caption!.copyWith(
-                        color: Colors.grey[700], fontWeight: FontWeight.bold),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Row(
-                        children: const [
-                          SizedBox(
-                            width: 24,
-                          ),
-                          Text('Reply'),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              );
-            },
           ),
-        ),
-      ],
+          contentChild: (context, data) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${data.userName}',
+                        style: Theme.of(context).textTheme.caption?.copyWith(
+                            fontWeight: FontWeight.w600, color: Colors.black),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        '${data.content}',
+                        style: Theme.of(context).textTheme.caption?.copyWith(
+                            fontWeight: FontWeight.w300, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+                DefaultTextStyle(
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                      color: Colors.grey[700], fontWeight: FontWeight.bold),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Row(
+                      children: const [
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text('Reply'),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+          contentRoot: (context, data) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${data.userName}',
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontWeight: FontWeight.w600, color: Colors.black),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          '${data.content}',
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontWeight: FontWeight.w300, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.caption!.copyWith(
+                        color: Colors.grey[700], fontWeight: FontWeight.bold),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Row(
+                        children: const [
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text('Reply'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
