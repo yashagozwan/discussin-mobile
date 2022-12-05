@@ -1,5 +1,5 @@
-import 'package:discussin_mobile/src/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'screen/splash/splash_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
