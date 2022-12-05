@@ -1,12 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
+import 'package:discussin_mobile/src/screen/post_detail/widget/comment_list.dart';
+import 'package:discussin_mobile/src/service/comment_service.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/util/finite_state.dart';
+import 'package:discussin_mobile/src/view_model/post_detail_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostDetailScreen extends ConsumerStatefulWidget {
   final PostData post;
+
   const PostDetailScreen({Key? key, required this.post}) : super(key: key);
 
   @override
@@ -15,12 +20,28 @@ class PostDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
+  final _commentController = TextEditingController();
   late PostData post;
+  late PostDetailNotifier viewModel;
+
+  Future<void> _initial() async {
+    post = widget.post;
+    Future(() {
+      viewModel = ref.read(postDetailViewModel);
+      viewModel.getCommentById(widget.post.id);
+    });
+  }
 
   @override
   void initState() {
+    _initial();
     super.initState();
-    post = widget.post;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _commentController.dispose();
   }
 
   @override
@@ -44,14 +65,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 1000,
-              child: _buildPostDetail(),
-            ),
-          ],
-        ),
+        child: _buildPostDetail(),
       ),
     );
   }
@@ -62,7 +76,8 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         ListTile(
           leading: ClipRRect(
             child: CachedNetworkImage(
-              imageUrl: '',
+              imageUrl:
+                  'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
               imageBuilder: (context, imageProvider) => Container(
                 width: 60.0,
                 height: 60.0,
@@ -89,14 +104,14 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
             ),
           ),
           title: Row(
-            children: const [
+            children: [
               Text(
-                'Harry Potter',
-                style: TextStyle(
+                post.user.username,
+                style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Text(
                   'Follow',
@@ -108,9 +123,9 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               ),
             ],
           ),
-          subtitle: const Text(
-            'Topic',
-            style: TextStyle(
+          subtitle: Text(
+            post.topic.name,
+            style: const TextStyle(
               color: Colors.black,
             ),
           ),
@@ -148,30 +163,34 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
               const SizedBox(
                 height: 10,
               ),
-              CachedNetworkImage(
-                imageUrl: post.photo.toString(),
-                imageBuilder: (context, imageProvider) => Container(
-                  height: 220,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover),
-                  ),
-                ),
-                placeholder: (context, url) => const SizedBox(
-                    height: 220,
-                    child: Center(child: CircularProgressIndicator())),
-                errorWidget: (context, url, error) => Container(
-                  height: 220,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
-                    image: DecorationImage(
-                      image:
-                          AssetImage('assets/images/Image-not-available.png'),
-                    ),
-                  ),
-                ),
-              ),
+              post.photo.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: post.photo.toString(),
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 220,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) => const SizedBox(
+                          height: 220,
+                          child: Center(child: CircularProgressIndicator())),
+                      errorWidget: (context, url, error) => Container(
+                        height: 220,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/Image-not-available.png'),
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
@@ -186,22 +205,110 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                     icon: const Icon(Icons.thumb_up_alt_outlined),
                     onPressed: () {},
                   ),
-                  const Text('10'),
+                  Text(post.count.like.toString()),
                   IconButton(
                     icon: const Icon(Icons.thumb_down_alt_outlined),
                     onPressed: () {},
                   ),
-                  const Text('10'),
+                  Text(post.count.dislike.toString()),
                   IconButton(
                     icon: const Icon(Icons.comment_outlined),
                     onPressed: () {},
                   ),
-                  const Text('10'),
+                  Text(post.count.comment.toString()),
                 ],
               ),
             ],
           ),
         ),
+        ListTile(
+          leading: CachedNetworkImage(
+            imageUrl:
+                'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
+            imageBuilder: (context, imageProvider) => Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+            placeholder: (context, url) => const SizedBox(
+                width: 40,
+                height: 40,
+                child: Center(child: CircularProgressIndicator())),
+            errorWidget: (context, url, error) => Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/Image-not-available.png'),
+                ),
+              ),
+            ),
+          ),
+          title: TextFormField(
+            controller: _commentController,
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.transparent,
+                isDense: true,
+                hintText: 'Leave Comment',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: const BorderSide(
+                    width: 0,
+                  ),
+                ),
+                suffixIcon: IconButton(
+                    onPressed: () async {
+                      await viewModel.createComment(
+                        post.id,
+                        CommentModel(
+                          body: _commentController.text,
+                        ),
+                      );
+                      await viewModel.getCommentById(post.id);
+                      _commentController.clear();
+                    },
+                    icon: const Icon(Icons.send))),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Consumer(
+          builder: (context, ref, child) {
+            final viewModel = ref.watch(postDetailViewModel);
+            final comments = viewModel.comments;
+            switch (viewModel.actionState) {
+              case StateAction.none:
+                if (comments.isEmpty) {
+                  return Center(
+                    child: SizedBox(
+                        height: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            TextPro('There Is No Comment'),
+                          ],
+                        )),
+                  );
+                }
+                return CommentList(
+                  comments: comments,
+                );
+              case StateAction.loading:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              case StateAction.error:
+                return const SizedBox.shrink();
+            }
+          },
+        )
       ],
     );
   }

@@ -38,7 +38,15 @@ Future<void> main() async {
       }
     });
 
-    test('Get Single Post', () async {});
+    test('Get Post By Id', () async {
+      try {
+        const postId = 18;
+        final results = await postService.getPostsById(postId);
+      } on DioError catch (error) {
+        print(error.message);
+        print(error.response?.data);
+      }
+    });
 
     test('Update Post', () async {});
 
