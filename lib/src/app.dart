@@ -10,6 +10,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Poppins',
+        useMaterial3: true,
       ),
       home: const SplashScreen(),
     );

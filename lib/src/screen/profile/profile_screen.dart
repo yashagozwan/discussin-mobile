@@ -136,8 +136,12 @@ Widget editprofile() {
           width: 360,
           child: ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-              child: const Text("edit Profile")),
+              style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(), backgroundColor: primaryBlue),
+              child: const Text(
+                "Edit Profile",
+                style: TextStyle(color: Colors.white),
+              )),
         ),
       ),
       Container(

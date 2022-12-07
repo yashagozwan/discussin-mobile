@@ -12,7 +12,6 @@ class PostListNotifier extends ChangeNotifier with FiniteState {
   final _topicService = TopicService();
 
   String _selectedTopic = 'All';
-
   String get selectedTopic => _selectedTopic;
 
   Iterable<PostData> get posts => _posts;
@@ -41,7 +40,20 @@ class PostListNotifier extends ChangeNotifier with FiniteState {
     }
   }
 
-  Future<void> getPostByTopic(String topic) async {}
+  Future<void> getPostByTopic(String topic) async {
+    try {
+      if (topic == 'All') {
+        final result = await _postService.getAllPost();
+        _posts = result.data;
+      } else {
+        final result = await _postService.getPostsByTopic(topic);
+        _posts = result.data;
+      }
+      notifyListeners();
+    } on DioError catch (error) {
+      print(error.response?.data);
+    }
+  }
 
   void setSelectedTopic(String newTopic) {
     _selectedTopic = newTopic;

@@ -89,8 +89,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    viewModel.getPostByTopic(topic.name);
                     viewModel.setSelectedTopic(topic.name);
+                    viewModel.getPostByTopic(topic.name);
                   },
                   child: Consumer(
                     builder: (context, ref, child) {

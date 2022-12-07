@@ -46,6 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         final setIndex = viewModel.setSelectedIndexScreen;
 
         return BottomNavigationBar(
+          backgroundColor: yellow,
           onTap: (value) {
             switch (value) {
               case 0:
@@ -160,31 +161,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           showUnselectedLabels: false,
           selectedItemColor: primaryBlue,
           unselectedItemColor: grey,
+          type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: '',
-              backgroundColor: yellow,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: '',
-              backgroundColor: yellow,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.create),
               label: '',
-              backgroundColor: yellow,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bookmark),
               label: '',
-              backgroundColor: yellow,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
               label: '',
-              backgroundColor: yellow,
             ),
           ],
         );
