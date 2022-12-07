@@ -169,6 +169,11 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
 
   void _saveAction() async {
     final viewModel = ref.watch(postCreateViewModel);
+
+    if (viewModel.title.isEmpty && viewModel.body.isEmpty) {
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
