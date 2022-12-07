@@ -5,6 +5,7 @@ import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import '../post_detail/post_detail_screen.dart';
 
 class PostListScreen extends ConsumerStatefulWidget {
@@ -34,6 +35,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: const TextPro(
           'Discuss.In',
@@ -57,22 +59,19 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                height: 40,
-                child: Center(child: _buildTopicList()),
-              ),
+      body: Column(
+        children: [
+          Flexible(
+            child: SizedBox(
+              height: 80,
+              child: _buildTopicList(),
             ),
-            SizedBox(
-              height: 580,
-              child: _buildList(),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 580,
+            child: _buildList(),
+          ),
+        ],
       ),
     );
   }
@@ -83,6 +82,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
         final viewModel = ref.watch(postListViewModel);
         final topics = viewModel.topics;
         return ListView.separated(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(20),
           itemBuilder: (context, index) {
             final topic = topics.elementAt(index);
             return Column(
@@ -145,191 +146,206 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
         final viewModel = ref.watch(postListViewModel);
         final posts = viewModel.posts;
         return ListView.separated(
+          padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
           itemBuilder: (context, index) {
             final post = posts.elementAt(index);
-            return Column(
-              children: [
-                ListTile(
-                  leading: ClipRRect(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: 60.0,
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
+            return Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: ClipRRect(
+                      child: CachedNetworkImage(
+                        imageUrl: '',
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 55.0,
+                          height: 55.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
+                          ),
                         ),
-                      ),
-                      placeholder: (context, url) => const SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: Center(
-                          child: CircularProgressIndicator(),
+                        placeholder: (context, url) => const SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        width: 60,
-                        height: 60,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
-                              ),
-                              fit: BoxFit.cover),
+                        errorWidget: (context, url, error) => Container(
+                          width: 55,
+                          height: 55,
+                          decoration: const BoxDecoration(
+                            color: yellow,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
+                            image: DecorationImage(
+                                image: Svg(
+                                  'assets/svg/avatar.svg',
+                                ),
+                                fit: BoxFit.cover),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  title: Row(
-                    children: [
-                      Text(
-                        post.user.username,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Follow',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: primaryBlue,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        post.topic.name,
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Text(
-                        '-',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Text(
-                        '3 Min Ago',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.bookmark_outline),
-                    color: Colors.black,
-                    onPressed: () {},
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          post.title,
-                          textAlign: TextAlign.justify,
+                    title: Row(
+                      children: [
+                        Text(
+                          post.user.username,
                           style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          post.body,
-                          textAlign: TextAlign.justify,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 10, 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.thumb_up_alt_outlined),
-                                onPressed: () {},
-                              ),
-                              Text(post.count.like.toString()),
-                              IconButton(
-                                icon: const Icon(Icons.thumb_down_alt_outlined),
-                                onPressed: () {},
-                              ),
-                              Text(post.count.dislike.toString()),
-                              IconButton(
-                                icon: const Icon(Icons.comment_outlined),
-                                onPressed: () {},
-                              ),
-                              Text(post.count.comment.toString()),
-                            ],
-                          ),
-                          InkWell(
-                            customBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Follow',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: primaryBlue,
                             ),
-                            splashColor: Colors.black12,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return PostDetailScreen(post: post);
-                                  },
+                          ),
+                        ),
+                      ],
+                    ),
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          post.topic.name,
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          '-',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          '3 Min Ago',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.bookmark_outline),
+                      color: Colors.black,
+                      onPressed: () {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            post.title,
+                            textAlign: TextAlign.justify,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        post.photo.isNotEmpty
+                            ? Container(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16)),
+                                child: CachedNetworkImage(
+                                  imageUrl: post.photo,
+                                  fit: BoxFit.cover,
                                 ),
-                              );
-                            },
-                            child: const SizedBox(
-                              width: 100,
-                              child: Center(
-                                child: Text.rich(
-                                  TextSpan(
-                                    text: "Read More",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: primaryBlue,
+                              )
+                            : Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  post.body,
+                                  textAlign: TextAlign.justify,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 5,
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 10, 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.thumb_up_alt_outlined),
+                                  onPressed: () {},
+                                ),
+                                Text(post.count.like.toString()),
+                                IconButton(
+                                  icon:
+                                      const Icon(Icons.thumb_down_alt_outlined),
+                                  onPressed: () {},
+                                ),
+                                Text(post.count.dislike.toString()),
+                                IconButton(
+                                  icon: const Icon(Icons.comment_outlined),
+                                  onPressed: () {},
+                                ),
+                                Text(post.count.comment.toString()),
+                              ],
+                            ),
+                            InkWell(
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              splashColor: Colors.black12,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return PostDetailScreen(postId: post.id);
+                                    },
+                                  ),
+                                );
+                              },
+                              child: const SizedBox(
+                                width: 100,
+                                child: Center(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: "Read More",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: primaryBlue,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             );
           },
           separatorBuilder: (context, index) => const SizedBox(),

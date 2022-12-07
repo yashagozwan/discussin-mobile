@@ -3,8 +3,10 @@ import 'package:comment_tree/data/comment.dart';
 import 'package:comment_tree/widgets/comment_tree_widget.dart';
 import 'package:comment_tree/widgets/tree_theme_data.dart';
 import 'package:discussin_mobile/src/model/comment_response_model.dart';
+import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 
 class CommentList extends ConsumerStatefulWidget {
   final Iterable<CommentData> comments;
@@ -46,8 +48,7 @@ class _CommentListState extends ConsumerState<CommentList> {
           avatarRoot: (context, data) => PreferredSize(
             preferredSize: const Size.fromRadius(18),
             child: CachedNetworkImage(
-              imageUrl:
-                  'https://cdna.artstation.com/p/assets/images/images/038/652/364/4k/joe-parente-joji-pink-guy-comp-05.jpg?1623691236',
+              imageUrl: '',
               imageBuilder: (context, imageProvider) => Container(
                 width: 40.0,
                 height: 40.0,
@@ -58,17 +59,23 @@ class _CommentListState extends ConsumerState<CommentList> {
                 ),
               ),
               placeholder: (context, url) => const SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: Center(child: CircularProgressIndicator())),
+                width: 40,
+                height: 40,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
               errorWidget: (context, url, error) => Container(
                 width: 40,
                 height: 40,
                 decoration: const BoxDecoration(
+                  color: yellow,
                   borderRadius: BorderRadius.all(Radius.circular(100)),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Image-not-available.png'),
-                  ),
+                      image: Svg(
+                        'assets/svg/avatar.svg',
+                      ),
+                      fit: BoxFit.cover),
                 ),
               ),
             ),

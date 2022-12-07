@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
+import 'package:discussin_mobile/src/view_model/post_bookmark_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 
 class PostBookmarkScreen extends ConsumerStatefulWidget {
   const PostBookmarkScreen({super.key});
@@ -16,9 +18,25 @@ class PostBookmarkScreen extends ConsumerStatefulWidget {
 }
 
 class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
+  late PostBookmarkNotifier viewModel;
+
+  Future<void> _initial() async {
+    Future(() {
+      final viewModel = ref.read(bookmarkViewModel);
+      viewModel.getBookmark();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initial();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: const TextPro(
           'Bookmark',
@@ -45,15 +63,8 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                height: 40,
-                child: Center(child: _buildTopicBookmark()),
-              ),
-            ),
             SizedBox(
-              height: 580,
+              height: 660,
               child: _buildPostBookmark(),
             ),
           ],
@@ -62,345 +73,158 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
     );
   }
 
-  Widget _buildTopicBookmark() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        final bookmarkTopics =
-            BookmarkTopicChangeNotifier.getBookmarks().elementAt(index);
-        return Column(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                // viewModel.getPostByTopic(topic.name);
-                // viewModel.setSelectedTopic(topic.name);
-              },
-              child: Container(
-                width: 120,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: primaryBlue,
-                    style: BorderStyle.none,
-                  ),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(25),
-                  ),
-                  color: (bookmarkTopics.name == 'All')
-                      ? primaryBlue
-                      : Colors.transparent,
-                ),
-                child: Center(
-                  child: TextPro(
-                    bookmarkTopics.name,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: (bookmarkTopics.name == 'All')
-                        ? Colors.white
-                        : primaryBlue,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (context, index) => const VerticalDivider(
-        color: Colors.transparent,
-        width: 4,
-      ),
-      itemCount: BookmarkTopicChangeNotifier.getBookmarks().length,
-    );
-  }
-
   Widget _buildPostBookmark() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        final bookmark = BookmarkChangeNotifier.getBookmarks().elementAt(index);
-        return Column(
-          children: [
-            ListTile(
-              leading: ClipRRect(
-                child: CachedNetworkImage(
-                  imageUrl: bookmark.profile,
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: 60.0,
-                    height: 60.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.cover),
-                    ),
-                  ),
-                  placeholder: (context, url) => const SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    width: 60,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(100)),
-                      image: DecorationImage(
-                        image:
-                            AssetImage('assets/images/Image-not-available.png'),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              title: Row(
-                children: [
-                  Text(
-                    bookmark.username,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Follow',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: primaryBlue,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              subtitle: Text(
-                bookmark.topic,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.bookmark),
-                color: Colors.black,
-                onPressed: () {},
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+    return Consumer(
+      builder: (context, ref, child) {
+        final viewModel = ref.watch(bookmarkViewModel);
+        final bookmarks = viewModel.bookmarks;
+        return ListView.separated(
+          padding: const EdgeInsets.all(8),
+          itemBuilder: (context, index) {
+            final bookmark = bookmarks.elementAt(index);
+            return Card(
+              color: Colors.white,
               child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      bookmark.title,
-                      textAlign: TextAlign.justify,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      bookmark.decription,
-                      textAlign: TextAlign.justify,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 10, 10),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.thumb_up_alt_outlined),
-                            onPressed: () {},
+                  ListTile(
+                    leading: ClipRRect(
+                      child: CachedNetworkImage(
+                        imageUrl: '',
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 55.0,
+                          height: 55.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
                           ),
-                          Text(bookmark.like.toString()),
-                          IconButton(
-                            icon: const Icon(Icons.thumb_down_alt_outlined),
-                            onPressed: () {},
-                          ),
-                          Text(bookmark.dislike.toString()),
-                          IconButton(
-                            icon: const Icon(Icons.comment_outlined),
-                            onPressed: () {},
-                          ),
-                          Text(bookmark.comment.toString()),
-                        ],
-                      ),
-                      InkWell(
-                        customBorder: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
                         ),
-                        splashColor: Colors.black12,
-                        onTap: () {},
-                        child: const SizedBox(
-                          width: 100,
+                        placeholder: (context, url) => const SizedBox(
+                          width: 55,
+                          height: 55,
                           child: Center(
-                            child: Text.rich(
-                              TextSpan(
-                                text: "Read More",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: primaryBlue,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: 55,
+                          height: 55,
+                          decoration: const BoxDecoration(
+                            color: yellow,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
+                            image: DecorationImage(
+                                image: Svg(
+                                  'assets/svg/avatar.svg',
                                 ),
-                              ),
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                    ),
+                    title: Row(
+                      children: [
+                        Text(
+                          bookmark.user.username,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Follow',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: primaryBlue,
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    subtitle: Text(
+                      bookmark.post.postTopic,
+                      style: const TextStyle(
+                        color: Colors.black,
                       ),
-                    ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.bookmark),
+                      color: Colors.black,
+                      onPressed: () {},
+                    ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            bookmark.post.title,
+                            textAlign: TextAlign.justify,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            bookmark.post.body,
+                            textAlign: TextAlign.justify,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 10, 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryBlue,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return PostDetailScreen(
+                                        postId: bookmark.post.id,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: TextPro(
+                                'Read More',
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(),
+          itemCount: bookmarks.length,
         );
       },
-      separatorBuilder: (context, index) => const SizedBox(),
-      itemCount: BookmarkChangeNotifier.getBookmarks().length,
     );
   }
 }
-
-class BookmarkTopic {
-  int id;
-  String name;
-
-  BookmarkTopic({
-    required this.id,
-    required this.name,
-  });
-}
-
-class BookmarkTopicChangeNotifier extends ChangeNotifier {
-  static Iterable<BookmarkTopic> getBookmarks() {
-    final bookmarkTopics = [
-      BookmarkTopic(
-        id: 1,
-        name: 'All',
-      ),
-      BookmarkTopic(
-        id: 2,
-        name: 'Programming',
-      ),
-      BookmarkTopic(
-        id: 3,
-        name: 'Meme',
-      ),
-      BookmarkTopic(
-        id: 4,
-        name: 'Tech',
-      ),
-      BookmarkTopic(
-        id: 5,
-        name: 'Sport',
-      ),
-      BookmarkTopic(
-        id: 6,
-        name: 'Story',
-      ),
-      BookmarkTopic(
-        id: 7,
-        name: 'Series',
-      ),
-    ];
-    return bookmarkTopics;
-  }
-}
-
-final bookmarkTopicViewModel =
-    ChangeNotifierProvider<BookmarkTopicChangeNotifier>(
-  (ref) {
-    return BookmarkTopicChangeNotifier();
-  },
-);
-
-class Bookmark {
-  String username;
-  String topic;
-  String profile;
-  String title;
-  String decription;
-  String photo;
-  int like;
-  int dislike;
-  int comment;
-
-  Bookmark({
-    required this.username,
-    required this.topic,
-    required this.profile,
-    required this.title,
-    required this.decription,
-    required this.photo,
-    required this.like,
-    required this.dislike,
-    required this.comment,
-  });
-}
-
-class BookmarkChangeNotifier extends ChangeNotifier {
-  static Iterable<Bookmark> getBookmarks() {
-    final bookmarks = [
-      Bookmark(
-        username: 'Pink Guy',
-        topic: 'Meme',
-        profile:
-            'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a288e946906757.586a393b6be47.jpg',
-        title: 'Hey everyone, this is ilon Maa',
-        decription:
-            'Elon Musk : China will never be able to replicate our technology, see the picture on my post Pfffffft!',
-        photo: 'https://img-9gag-fun.9cache.com/photo/a9qAKrW_700bwp.webp',
-        like: 120,
-        dislike: 15,
-        comment: 30,
-      ),
-      Bookmark(
-        username: 'Pink Guy',
-        topic: 'Meme',
-        profile:
-            'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a288e946906757.586a393b6be47.jpg',
-        title: 'Hey everyone, this is ilon Maa',
-        decription:
-            'Elon Musk : China will never be able to replicate our technology, see the picture on my post Pfffffft!',
-        photo: 'https://img-9gag-fun.9cache.com/photo/a9qAKrW_700bwp.webp',
-        like: 120,
-        dislike: 15,
-        comment: 30,
-      ),
-      Bookmark(
-        username: 'Pink Guy',
-        topic: 'Meme',
-        profile:
-            'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a288e946906757.586a393b6be47.jpg',
-        title: 'Hey everyone, this is ilon Maa',
-        decription:
-            'Elon Musk : China will never be able to replicate our technology, see the picture on my post Pfffffft!',
-        photo: 'https://img-9gag-fun.9cache.com/photo/a9qAKrW_700bwp.webp',
-        like: 120,
-        dislike: 15,
-        comment: 30,
-      ),
-    ];
-    return bookmarks;
-  }
-}
-
-final bookmarkViewModel = ChangeNotifierProvider<BookmarkChangeNotifier>(
-  (ref) {
-    return BookmarkChangeNotifier();
-  },
-);

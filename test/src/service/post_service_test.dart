@@ -42,6 +42,8 @@ Future<void> main() async {
       try {
         const postId = 18;
         final results = await postService.getPostsById(postId);
+
+        print(results);
       } on DioError catch (error) {
         print(error.message);
         print(error.response?.data);

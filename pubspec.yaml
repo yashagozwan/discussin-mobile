@@ -45,6 +45,7 @@ dependencies:
   image_picker: ^0.8.6
   cloudinary_sdk: ^4.0.2+10
   comment_tree: ^0.3.0
+  flutter_svg_provider: ^1.0.3
 
 dev_dependencies:
   flutter_test:

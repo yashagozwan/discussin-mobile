@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/api/discussin_api.dart';
+import 'package:discussin_mobile/src/model/post_detail_response_model.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
 
 class PostModel {
@@ -52,10 +53,11 @@ class PostService {
     }
   }
 
-  Future<void> getPostsById(int postId) async {
+  Future<PostDetailResponse> getPostsById(int postId) async {
     try {
       final result = await _client.get('/posts/$postId');
-      print(result);
+      return PostDetailResponse.fromMap(result.data);
+
     } on DioError {
       rethrow;
     }
