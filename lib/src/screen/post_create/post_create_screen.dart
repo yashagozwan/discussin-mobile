@@ -65,7 +65,10 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
         physics: const BouncingScrollPhysics(),
         children: [
           const SizedBox(height: 16),
-          _buildCurrentAccount(),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: _buildCurrentAccount(),
+          ),
           const SizedBox(height: 16),
           _buildFormAndImage(),
         ],
@@ -169,6 +172,11 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
 
   void _saveAction() async {
     final viewModel = ref.watch(postCreateViewModel);
+
+    if (viewModel.title.isEmpty && viewModel.body.isEmpty) {
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -209,7 +217,6 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
                   title: viewModel.title,
                   body: viewModel.body,
                 );
-
                 final result = await viewModel.createPost(topicName, post);
                 if (result && mounted) {
                   Navigator.pop(context);
@@ -226,6 +233,13 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
                       },
                     ),
                   );
+
+                  // Reset Field
+                  viewModel.setTitle('');
+                  viewModel.setBody('');
+                  viewModel.setXFile(null);
+                  _titleController.clear();
+                  _bodyController.clear();
                 }
               },
               child: const Text('Yes'),

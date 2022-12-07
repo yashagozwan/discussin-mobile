@@ -1,6 +1,5 @@
 import 'package:discussin_mobile/src/screen/home/home_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
-import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/splash_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
