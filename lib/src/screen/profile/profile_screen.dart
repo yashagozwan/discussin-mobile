@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
+import 'package:discussin_mobile/src/screen/settings/setting_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/profile_view_model.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
-
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProfileScreenState();
 }
@@ -65,9 +65,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       body: SingleChildScrollView(child: editprofile()),
     );
   }
-}
-
-Widget editprofile() {
+  Widget editprofile() {
   return Column(
     children: [
       Padding(
@@ -235,7 +233,16 @@ Widget editprofile() {
         margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
         child: InkWell(
           splashColor: Colors.black45,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const SettingScreen();
+                                  },
+                                ),
+                              );
+          },
           child: SizedBox(
             width: 335,
             child: Row(
@@ -270,3 +277,6 @@ Widget editprofile() {
     ],
   );
 }
+
+}
+
