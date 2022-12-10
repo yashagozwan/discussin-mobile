@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/screen/post_detail/widget/comment_list.dart';
+import 'package:discussin_mobile/src/screen/post_list/widget/bookmark_button.dart';
 import 'package:discussin_mobile/src/service/comment_service.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
@@ -77,7 +77,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         final post = viewModel.post;
         switch (viewModel.actionState) {
           case StateAction.none:
-            if(post == null) return SizedBox.shrink();
+            if (post == null) return const SizedBox.shrink();
 
             return Column(
               children: [
@@ -91,7 +91,9 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       placeholder: (context, url) => const SizedBox(
@@ -106,12 +108,15 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                         height: 55,
                         decoration: const BoxDecoration(
                           color: yellow,
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100),
+                          ),
                           image: DecorationImage(
-                              image: Svg(
-                                'assets/svg/avatar.svg',
-                              ),
-                              fit: BoxFit.cover),
+                            image: Svg(
+                              'assets/svg/avatar.svg',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -142,11 +147,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.bookmark_outline),
-                    color: Colors.black,
-                    onPressed: () {},
-                  ),
+                  trailing: BookmarkButton(post: post),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -180,14 +181,17 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                                   ),
                                 ),
                                 placeholder: (context, url) => const SizedBox(
-                                    height: 220,
-                                    child: Center(
-                                        child: CircularProgressIndicator())),
+                                  height: 220,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
                                 errorWidget: (context, url, error) => Container(
                                   height: 220,
                                   decoration: const BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(100)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(100),
+                                    ),
                                     image: DecorationImage(
                                       image: AssetImage(
                                           'assets/images/Image-not-available.png'),
@@ -218,17 +222,23 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                             icon: const Icon(Icons.thumb_up_alt_outlined),
                             onPressed: () {},
                           ),
-                          Text(post.count.like.toString()),
+                          Text(
+                            post.count.like.toString(),
+                          ),
                           IconButton(
                             icon: const Icon(Icons.thumb_down_alt_outlined),
                             onPressed: () {},
                           ),
-                          Text(post.count.dislike.toString()),
+                          Text(
+                            post.count.dislike.toString(),
+                          ),
                           IconButton(
                             icon: const Icon(Icons.comment_outlined),
                             onPressed: () {},
                           ),
-                          Text(post.count.comment.toString()),
+                          Text(
+                            post.count.comment.toString(),
+                          ),
                         ],
                       ),
                     ],
@@ -243,7 +253,9 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.cover),
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     placeholder: (context, url) => const SizedBox(
@@ -258,40 +270,45 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                       height: 40,
                       decoration: const BoxDecoration(
                         color: yellow,
-                        borderRadius: BorderRadius.all(Radius.circular(100)),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(100),
+                        ),
                         image: DecorationImage(
-                            image: Svg(
-                              'assets/svg/avatar.svg',
-                            ),
-                            fit: BoxFit.cover),
+                          image: Svg(
+                            'assets/svg/avatar.svg',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
                   title: TextFormField(
                     controller: _commentController,
                     decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        isDense: true,
-                        hintText: 'Leave Comment',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: const BorderSide(
-                            width: 0,
-                          ),
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      isDense: true,
+                      hintText: 'Leave Comment',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                          width: 0,
                         ),
-                        suffixIcon: IconButton(
-                            onPressed: () async {
-                              await viewModel.createComment(
-                                post.id,
-                                CommentModel(
-                                  body: _commentController.text,
-                                ),
-                              );
-                              await viewModel.getCommentById(post.id);
-                              _commentController.clear();
-                            },
-                            icon: const Icon(Icons.send))),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          await viewModel.createComment(
+                            post.id,
+                            CommentModel(
+                              body: _commentController.text,
+                            ),
+                          );
+                          await viewModel.getCommentById(post.id);
+                          _commentController.clear();
+                        },
+                        icon: const Icon(Icons.send),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -306,13 +323,14 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                         if (comments.isEmpty) {
                           return Center(
                             child: SizedBox(
-                                height: 100,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    TextPro('There Is No Comment'),
-                                  ],
-                                )),
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  TextPro('There Is No Comment'),
+                                ],
+                              ),
+                            ),
                           );
                         }
                         return CommentList(
@@ -334,13 +352,13 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
           case StateAction.loading:
             return SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             );
 
           case StateAction.error:
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
         }
       },
     );

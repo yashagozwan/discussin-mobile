@@ -39,12 +39,15 @@ class _CommentListState extends ConsumerState<CommentList> {
         final comment = comments.elementAt(index);
         return CommentTreeWidget<Comment, Comment>(
           Comment(
-              avatar: comment.user.photo,
-              userName: comment.user.username,
-              content: comment.body),
+            avatar: comment.user.photo,
+            userName: comment.user.username,
+            content: comment.body,
+          ),
           const [],
-          treeThemeData:
-              const TreeThemeData(lineColor: Colors.transparent, lineWidth: 3),
+          treeThemeData: const TreeThemeData(
+            lineColor: Colors.transparent,
+            lineWidth: 3,
+          ),
           avatarRoot: (context, data) => PreferredSize(
             preferredSize: const Size.fromRadius(18),
             child: CachedNetworkImage(
@@ -54,8 +57,10 @@ class _CommentListState extends ConsumerState<CommentList> {
                 height: 40.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image:
-                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               placeholder: (context, url) => const SizedBox(
@@ -72,10 +77,11 @@ class _CommentListState extends ConsumerState<CommentList> {
                   color: yellow,
                   borderRadius: BorderRadius.all(Radius.circular(100)),
                   image: DecorationImage(
-                      image: Svg(
-                        'assets/svg/avatar.svg',
-                      ),
-                      fit: BoxFit.cover),
+                    image: Svg(
+                      'assets/svg/avatar.svg',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -95,15 +101,18 @@ class _CommentListState extends ConsumerState<CommentList> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(12)),
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${data.userName}',
                         style: Theme.of(context).textTheme.caption?.copyWith(
-                            fontWeight: FontWeight.w600, color: Colors.black),
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
                       ),
                       const SizedBox(
                         height: 4,
@@ -111,14 +120,18 @@ class _CommentListState extends ConsumerState<CommentList> {
                       Text(
                         '${data.content}',
                         style: Theme.of(context).textTheme.caption?.copyWith(
-                            fontWeight: FontWeight.w300, color: Colors.black),
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
+                            ),
                       ),
                     ],
                   ),
                 ),
                 DefaultTextStyle(
                   style: Theme.of(context).textTheme.caption!.copyWith(
-                      color: Colors.grey[700], fontWeight: FontWeight.bold),
+                        color: Colors.grey[700],
+                        fontWeight: FontWeight.bold,
+                      ),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Row(
@@ -144,15 +157,18 @@ class _CommentListState extends ConsumerState<CommentList> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(12)),
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '${data.userName}',
                           style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontWeight: FontWeight.w600, color: Colors.black),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                         ),
                         const SizedBox(
                           height: 4,
@@ -160,14 +176,18 @@ class _CommentListState extends ConsumerState<CommentList> {
                         Text(
                           '${data.content}',
                           style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontWeight: FontWeight.w300, color: Colors.black),
+                                fontWeight: FontWeight.w300,
+                                color: Colors.black,
+                              ),
                         ),
                       ],
                     ),
                   ),
                   DefaultTextStyle(
                     style: Theme.of(context).textTheme.caption!.copyWith(
-                        color: Colors.grey[700], fontWeight: FontWeight.bold),
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.bold,
+                        ),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Row(

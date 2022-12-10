@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/model/topic_response_model.dart' as tpc;
+import 'package:discussin_mobile/src/service/bookmark_service.dart';
 import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/service/topic_service.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart' show ChangeNotifier;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostListNotifier extends ChangeNotifier with FiniteState {
+  final _bookmarkService = BookmarkService();
   final _postService = PostService();
   final _topicService = TopicService();
 
@@ -58,6 +60,49 @@ class PostListNotifier extends ChangeNotifier with FiniteState {
   void setSelectedTopic(String newTopic) {
     _selectedTopic = newTopic;
     notifyListeners();
+  }
+
+  Future<void> createBookmark(int postId) async {
+    setStateAction(StateAction.loading);
+    try {
+      await _bookmarkService.createBookmark(postId);
+      setStateAction(StateAction.none);
+    } on DioError catch (error) {
+      setStateAction(StateAction.error);
+      print(error.response?.data);
+    }
+    getAllPost();
+  }
+
+  Future<void> deleteBookmark(int postId) async {
+    setStateAction(StateAction.loading);
+    try {
+      await _bookmarkService.deleteBookmark(postId);
+      setStateAction(StateAction.none);
+    } on DioError catch (error) {
+      setStateAction(StateAction.error);
+      print(error.response?.data);
+    }
+    getAllPost();
+  }
+
+  Future<void> deleteSingleBookmark(int postId) async {
+    final bookmarks = await _bookmarkService.getBookmark();
+    final bookmark = bookmarks.data.firstWhere((e) => e.post.id == postId);
+    await _bookmarkService.deleteBookmark(bookmark.id);
+    getAllPost();
+  }
+
+  Future<bool> isSaveable(PostData post) async {
+    final posts = await _bookmarkService.getBookmark();
+
+    final isBookmarkAlreadyExist =
+        posts.data.where((e) => e.post.id == post.id);
+
+    if (isBookmarkAlreadyExist.isNotEmpty) {
+      return false;
+    }
+    return true;
   }
 }
 

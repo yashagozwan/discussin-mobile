@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
@@ -78,6 +77,14 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
       builder: (context, ref, child) {
         final viewModel = ref.watch(bookmarkViewModel);
         final bookmarks = viewModel.bookmarks;
+        if (bookmarks.isEmpty) {
+          return const Center(
+            child: TextPro(
+              'There Is No Bookmark',
+              fontWeight: FontWeight.w600,
+            ),
+          );
+        }
         return ListView.separated(
           padding: const EdgeInsets.all(8),
           itemBuilder: (context, index) {
@@ -96,7 +103,9 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: imageProvider, fit: BoxFit.cover),
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         placeholder: (context, url) => const SizedBox(
@@ -111,13 +120,15 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
                           height: 55,
                           decoration: const BoxDecoration(
                             color: yellow,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
                             image: DecorationImage(
-                                image: Svg(
-                                  'assets/svg/avatar.svg',
-                                ),
-                                fit: BoxFit.cover),
+                              image: Svg(
+                                'assets/svg/avatar.svg',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -150,8 +161,17 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.bookmark),
-                      color: Colors.black,
-                      onPressed: () {},
+                      color: green,
+                      onPressed: () {
+                        viewModel.deleteBookmark(bookmark.id);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '${bookmark.post.title} Is Deleted From Bookmark List',
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Padding(
@@ -207,7 +227,7 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
                                   ),
                                 );
                               },
-                              child: TextPro(
+                              child: const TextPro(
                                 'Read More',
                                 color: Colors.white,
                               ),

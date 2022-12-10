@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/model/comment_response_model.dart';
-import 'package:discussin_mobile/src/model/post_detail_response_model.dart';
+import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/service/comment_service.dart';
 import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
@@ -16,7 +16,6 @@ class PostDetailNotifier extends ChangeNotifier with FiniteState {
 
   PostData? get post => _post;
   PostData? _post;
-
 
   Future<void> createComment(int postId, CommentModel comment) async {
     setStateAction(StateAction.loading);

@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart';
+import 'package:discussin_mobile/src/screen/post_list/widget/bookmark_button.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
@@ -6,7 +8,6 @@ import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import '../post_detail/post_detail_screen.dart';
 
 class PostListScreen extends ConsumerStatefulWidget {
   const PostListScreen({
@@ -83,7 +84,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
         final topics = viewModel.topics;
         return ListView.separated(
           shrinkWrap: true,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           itemBuilder: (context, index) {
             final topic = topics.elementAt(index);
             return Column(
@@ -146,7 +147,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
         final viewModel = ref.watch(postListViewModel);
         final posts = viewModel.posts;
         return ListView.separated(
-          padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
           itemBuilder: (context, index) {
             final post = posts.elementAt(index);
             return Card(
@@ -162,7 +163,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: imageProvider, fit: BoxFit.cover),
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         placeholder: (context, url) => const SizedBox(
@@ -177,13 +180,15 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                           height: 55,
                           decoration: const BoxDecoration(
                             color: yellow,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
                             image: DecorationImage(
-                                image: Svg(
-                                  'assets/svg/avatar.svg',
-                                ),
-                                fit: BoxFit.cover),
+                              image: Svg(
+                                'assets/svg/avatar.svg',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -236,10 +241,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                         ),
                       ],
                     ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.bookmark_outline),
-                      color: Colors.black,
-                      onPressed: () {},
+                    trailing: BookmarkButton(
+                      post: post,
                     ),
                   ),
                   Padding(
@@ -264,7 +267,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                                 margin: const EdgeInsets.symmetric(vertical: 8),
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16)),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                                 child: CachedNetworkImage(
                                   imageUrl: post.photo,
                                   fit: BoxFit.cover,
@@ -295,18 +299,24 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                                   icon: const Icon(Icons.thumb_up_alt_outlined),
                                   onPressed: () {},
                                 ),
-                                Text(post.count.like.toString()),
+                                Text(
+                                  post.count.like.toString(),
+                                ),
                                 IconButton(
                                   icon:
                                       const Icon(Icons.thumb_down_alt_outlined),
                                   onPressed: () {},
                                 ),
-                                Text(post.count.dislike.toString()),
+                                Text(
+                                  post.count.dislike.toString(),
+                                ),
                                 IconButton(
                                   icon: const Icon(Icons.comment_outlined),
                                   onPressed: () {},
                                 ),
-                                Text(post.count.comment.toString()),
+                                Text(
+                                  post.count.comment.toString(),
+                                ),
                               ],
                             ),
                             InkWell(

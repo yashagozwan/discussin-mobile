@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class BookmarkResponse {
   String message;
   List<BookmarkData> data;
@@ -30,16 +31,19 @@ class BookmarkResponse {
 }
 
 class BookmarkData {
+  int id;
   UserEmbed user;
   PostEmbed post;
 
   BookmarkData({
+    required this.id,
     required this.user,
     required this.post,
   });
 
   factory BookmarkData.fromMap(Map<String, dynamic> data) {
     return BookmarkData(
+      id: data['ID'],
       user: UserEmbed.fromJson(data['user']),
       post: PostEmbed.fromJson(data['post']),
     );
@@ -47,7 +51,7 @@ class BookmarkData {
 
   @override
   String toString() {
-    return 'BookmarkModel(user: $user, post: $post)';
+    return 'BookmarkModel(bookmarkid:$id user: $user, post: $post)';
   }
 }
 

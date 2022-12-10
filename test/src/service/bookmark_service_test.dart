@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/service/bookmark_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
@@ -14,7 +13,7 @@ Future<void> main() async {
     test('Create Bookmark', () async {
       try {
         const postId = 31;
-        final result = await bookmarkService.createBookmark(postId);
+        await bookmarkService.createBookmark(postId);
       } on DioError catch (error) {
         print(error.message);
         print(error.response?.data);
@@ -24,6 +23,16 @@ Future<void> main() async {
     test('Get Bookmark', () async {
       try {
         final result = await bookmarkService.getBookmark();
+      } on DioError catch (error) {
+        print(error.message);
+        print(error.response?.data);
+      }
+    });
+
+    test('Delete Bookmark', () async {
+      try {
+        const postId = 10;
+        final result = await bookmarkService.deleteBookmark(postId);
       } on DioError catch (error) {
         print(error.message);
         print(error.response?.data);

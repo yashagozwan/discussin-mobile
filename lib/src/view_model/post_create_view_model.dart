@@ -38,7 +38,7 @@ class PostCreateNotifier extends ChangeNotifier with FiniteState {
   }
 
   String get topicName => _topicName;
-  String _topicName = 'Anime';
+  String _topicName = 'Technology';
 
   void setTopicName(String newTopicName) {
     _topicName = newTopicName;
@@ -57,6 +57,7 @@ class PostCreateNotifier extends ChangeNotifier with FiniteState {
       setStateAction(StateAction.none);
     } on DioError catch (error) {
       setStateAction(StateAction.error);
+      print(error.response?.data);
     }
   }
 

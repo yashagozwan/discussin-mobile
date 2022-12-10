@@ -55,5 +55,5 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     );
   }
 
-  String? validator(String? value) {}
+
 }

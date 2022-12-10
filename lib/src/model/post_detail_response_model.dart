@@ -1,3 +1,5 @@
+import 'package:discussin_mobile/src/model/post_response_model.dart';
+
 class PostDetailResponse {
   String message;
   PostData data;
@@ -12,49 +14,6 @@ class PostDetailResponse {
       message: data['message'],
       data: PostData.fromMap(data['data']),
     );
-  }
-}
-
-class PostData {
-  int id;
-  String title;
-  String body;
-  String photo;
-  int createdAt;
-  bool isActive;
-  UserEmbed user;
-  TopicEmbed topic;
-  CountEmbed count;
-
-  PostData({
-    required this.id,
-    required this.title,
-    required this.body,
-    required this.photo,
-    required this.createdAt,
-    required this.isActive,
-    required this.user,
-    required this.topic,
-    required this.count,
-  });
-
-  factory PostData.fromMap(Map<String, dynamic> data) {
-    return PostData(
-      id: data['ID'],
-      title: data['title'],
-      body: data['body'],
-      photo: data['photo'],
-      createdAt: data['createdAt'],
-      isActive: data['isActive'],
-      user: UserEmbed.fromJson(data['user']),
-      topic: TopicEmbed.fromJson(data['topic']),
-      count: CountEmbed.fromJson(data['count']),
-    );
-  }
-
-  @override
-  String toString() {
-    return 'PostModel(id:$id, title:$title, body:$body, photo:$photo, createdAt:$createdAt, isActive:$isActive)';
   }
 }
 

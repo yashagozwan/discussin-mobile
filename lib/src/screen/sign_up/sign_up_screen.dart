@@ -5,7 +5,6 @@ import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/util/util.dart';
 import 'package:discussin_mobile/src/view_model/sign_up_view_model.dart';
-import 'package:discussin_mobile/src/widget/alert_success.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
