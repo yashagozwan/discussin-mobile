@@ -37,7 +37,7 @@ class _CommentListState extends ConsumerState<CommentList> {
         final viewModel = ref.watch(postDetailViewModel);
         final comments = viewModel.comments;
         return ListView.builder(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           shrinkWrap: true,
           itemCount: comments.length,
