@@ -6,6 +6,8 @@ import 'package:discussin_mobile/src/view_model/profile_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -15,6 +17,11 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  late PickedFile _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +72,49 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       body: SingleChildScrollView(child: editprofile()),
     );
   }
+  Widget bottomsheet() {
+  return Container(
+    height: 100,
+    width: MediaQuery.of(this.context).size.height,
+    margin: const EdgeInsets.symmetric(
+      horizontal: 20,
+      vertical: 20
+    ),
+    child: Column(
+      children:  [
+        const TextPro("Choose Profile photo",
+          fontSize: 20,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(onPressed: () {
+              takePhoto(ImageSource.camera);
+            }, 
+              icon: Icon(Icons.camera),
+              ),
+            TextPro("Camera"),
+            SizedBox(width: 20,),
+            IconButton(onPressed: () {
+              takePhoto(ImageSource.gallery);
+            },
+              icon: Icon(Icons.image),
+              ),
+            TextPro("Gallery")
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+void takePhoto(ImageSource source) async {
+  final PickedFile = await _picker.pickImage(
+    source: source,
+    );
 }
 
 Widget editprofile() {
@@ -75,7 +125,7 @@ Widget editprofile() {
         child: Row(
           children: [
             Stack(
-              children: [
+              children: [ 
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                   child: CachedNetworkImage(
@@ -85,6 +135,7 @@ Widget editprofile() {
                       backgroundImage: image,
                       radius: 60,
                     ),
+                    
                   ),
                 ),
                 Container(
@@ -98,7 +149,9 @@ Widget editprofile() {
                   child: IconButton(
                     iconSize: 22,
                     icon: const Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(context: this.context, builder: ((builder) => bottomsheet()));
+                    },
                   ),
                 )
               ],
@@ -270,3 +323,6 @@ Widget editprofile() {
     ],
   );
 }
+
+}
+
