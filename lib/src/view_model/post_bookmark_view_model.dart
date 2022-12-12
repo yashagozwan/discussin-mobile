@@ -24,28 +24,24 @@ class PostBookmarkNotifier extends ChangeNotifier with FiniteState {
     }
   }
 
+  Future<bool> reloadBookmark() async {
+    final result = await _bookmarkService.getBookmark();
+    _bookmarks = result.data;
+    notifyListeners();
+    return true;
+  }
+
   Future<void> deleteBookmark(int postId) async {
     setStateAction(StateAction.loading);
     try {
       await _bookmarkService.deleteBookmark(postId);
+      reloadBookmark();
       setStateAction(StateAction.none);
     } on DioError catch (error) {
       setStateAction(StateAction.error);
       print(error.response?.data);
     }
-    getBookmark();
   }
-
-  // Future<void> createBookmark(int postId) async {
-  //   setStateAction(StateAction.loading);
-  //   try {
-  //     await _bookmarkService.createBookmark(postId);
-  //     setStateAction(StateAction.none);
-  //   } on DioError catch (error) {
-  //     setStateAction(StateAction.error);
-  //     print(error.response?.data);
-  //   }
-  // }
 }
 
 final bookmarkViewModel = ChangeNotifierProvider((ref) {

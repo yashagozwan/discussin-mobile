@@ -297,7 +297,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                               children: [
                                 IconButton(
                                   icon: const Icon(Icons.thumb_up_alt_outlined),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    viewModel.doLikePost(post.id);
+                                  },
                                 ),
                                 Text(
                                   post.count.like.toString(),
@@ -305,7 +307,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                                 IconButton(
                                   icon:
                                       const Icon(Icons.thumb_down_alt_outlined),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    viewModel.doDislikePost(post.id);
+                                  },
                                 ),
                                 Text(
                                   post.count.dislike.toString(),

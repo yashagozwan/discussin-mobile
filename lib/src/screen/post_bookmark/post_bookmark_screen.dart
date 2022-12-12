@@ -28,8 +28,8 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
 
   @override
   void initState() {
-    super.initState();
     _initial();
+    super.initState();
   }
 
   @override
@@ -76,6 +76,7 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final viewModel = ref.watch(bookmarkViewModel);
+
         final bookmarks = viewModel.bookmarks;
         if (bookmarks.isEmpty) {
           return const Center(

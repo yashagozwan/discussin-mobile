@@ -5,6 +5,7 @@ import 'package:discussin_mobile/src/service/comment_service.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/view_model/post_detail_view_model.dart';
+import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,73 +83,72 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
             return Column(
               children: [
                 ListTile(
-                  leading: ClipRRect(
-                    child: CachedNetworkImage(
-                      imageUrl: '',
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: 55.0,
-                        height: 55.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      placeholder: (context, url) => const SizedBox(
-                        width: 55,
-                        height: 55,
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        width: 55,
-                        height: 55,
-                        decoration: const BoxDecoration(
-                          color: yellow,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(100),
-                          ),
-                          image: DecorationImage(
-                            image: Svg(
-                              'assets/svg/avatar.svg',
+                    leading: ClipRRect(
+                      child: CachedNetworkImage(
+                        imageUrl: '',
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 55.0,
+                          height: 55.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        placeholder: (context, url) => const SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: 55,
+                          height: 55,
+                          decoration: const BoxDecoration(
+                            color: yellow,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
+                            image: DecorationImage(
+                              image: Svg(
+                                'assets/svg/avatar.svg',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  title: Row(
-                    children: [
-                      Text(
-                        post.user.username,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Follow',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: primaryBlue,
+                    title: Row(
+                      children: [
+                        Text(
+                          post.user.username,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    post.topic.name,
-                    style: const TextStyle(
-                      color: Colors.black,
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Follow',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: primaryBlue,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  trailing: BookmarkButton(post: post),
-                ),
+                    subtitle: Text(
+                      post.topic.name,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    trailing: BookmarkButton(post: post)),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Column(
@@ -220,14 +220,24 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.thumb_up_alt_outlined),
-                            onPressed: () {},
+                            onPressed: () {
+                              ref
+                                  .read(postListViewModel)
+                                  .doLikePost(widget.postId);
+                              viewModel.doLikePost(widget.postId);
+                            },
                           ),
                           Text(
                             post.count.like.toString(),
                           ),
                           IconButton(
                             icon: const Icon(Icons.thumb_down_alt_outlined),
-                            onPressed: () {},
+                            onPressed: () {
+                              ref
+                                  .read(postListViewModel)
+                                  .doDislikePost(widget.postId);
+                              viewModel.doDislikePost(widget.postId);
+                            },
                           ),
                           Text(
                             post.count.dislike.toString(),
@@ -285,30 +295,45 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                   title: TextFormField(
                     controller: _commentController,
                     decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.transparent,
-                      isDense: true,
-                      hintText: 'Leave Comment',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: const BorderSide(
-                          width: 0,
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        isDense: true,
+                        hintText: 'Leave Comment',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: const BorderSide(
+                            width: 0,
+                          ),
                         ),
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          await viewModel.createComment(
-                            post.id,
-                            CommentModel(
-                              body: _commentController.text,
-                            ),
-                          );
-                          await viewModel.getCommentById(post.id);
-                          _commentController.clear();
-                        },
-                        icon: const Icon(Icons.send),
-                      ),
-                    ),
+                        suffixIcon: Consumer(
+                          builder: (context, ref, child) {
+                            final viewModel = ref.watch(postDetailViewModel);
+                            switch (viewModel.stateActionComment) {
+                              case StateAction.none:
+                                return IconButton(
+                                  onPressed: () async {
+                                    await viewModel.createComment(
+                                      post.id,
+                                      CommentModel(
+                                        body: _commentController.text,
+                                      ),
+                                    );
+
+                                    _commentController.clear();
+                                    ref.read(postListViewModel).getAllPost();
+                                  },
+                                  icon: const Icon(Icons.send),
+                                );
+                              case StateAction.loading:
+                                return Transform.scale(
+                                  scale: 0.5,
+                                  child: const CircularProgressIndicator(),
+                                );
+                              case StateAction.error:
+                                return const SizedBox.shrink();
+                            }
+                          },
+                        )),
                   ),
                 ),
                 const SizedBox(

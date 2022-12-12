@@ -1,4 +1,5 @@
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/view_model/post_bookmark_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,7 @@ class BookmarkButton extends ConsumerStatefulWidget {
 
 class _BookmarkButtonState extends ConsumerState<BookmarkButton> {
   bool isSaveable = false;
+
   void setSaveable(bool value) {
     isSaveable = value;
   }
@@ -44,14 +46,29 @@ class _BookmarkButtonState extends ConsumerState<BookmarkButton> {
               }
             }
             return IconButton(
-              onPressed: () {
+              onPressed: () async {
                 if (snapshot.data != null) {
                   if (snapshot.data!) {
                     viewModel.createBookmark(widget.post.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '${widget.post.title} Has Been Bookmarked',
+                        ),
+                      ),
+                    );
                   } else {
                     viewModel.deleteSingleBookmark(widget.post.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '${widget.post.title} Is Deleted From Bookmark List',
+                        ),
+                      ),
+                    );
                   }
                 }
+                ref.read(bookmarkViewModel).reloadBookmark();
               },
               icon: getIcon(isSaveable),
             );
