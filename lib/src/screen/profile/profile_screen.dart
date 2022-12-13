@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
+import 'package:discussin_mobile/src/screen/settings/setting_screen.dart';
 import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
@@ -13,7 +14,6 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
-
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProfileScreenState();
 }
