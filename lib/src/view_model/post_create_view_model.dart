@@ -38,7 +38,7 @@ class PostCreateNotifier extends ChangeNotifier with FiniteState {
   }
 
   String get topicName => _topicName;
-  String _topicName = 'Technology';
+  String _topicName = 'Football';
 
   void setTopicName(String newTopicName) {
     _topicName = newTopicName;

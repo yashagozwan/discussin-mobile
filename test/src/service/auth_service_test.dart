@@ -15,7 +15,7 @@ void main() {
     test('Login', () async {
       try {
         final result = await authService.login(
-          SignIn(email: 'yukino@gmail.com', password: '12345Mantap'),
+          SignIn(email: 'kecoaterbang@gmail.com', password: 'kecoaterbang'),
         );
 
         print(result.data.token);
