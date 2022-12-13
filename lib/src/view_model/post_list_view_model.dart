@@ -6,11 +6,12 @@ import 'package:discussin_mobile/src/service/like_service.dart';
 import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/service/topic_service.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
+import 'package:discussin_mobile/src/view_model/post_search_view_model.dart';
 import 'package:flutter/material.dart' show ChangeNotifier;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostListNotifier extends ChangeNotifier
-    with FiniteState
+    with FiniteState, FiniteStateSearch
     implements PostLikeable {
   final _likeService = LikeService();
   final _bookmarkService = BookmarkService();
@@ -18,17 +19,21 @@ class PostListNotifier extends ChangeNotifier
   final _topicService = TopicService();
 
   String _selectedTopic = 'All';
+
   String get selectedTopic => _selectedTopic;
 
   Iterable<PostData> get posts => _posts;
   Iterable<PostData> _posts = [];
 
   Future<void> getAllPost() async {
+    setStateAction(StateAction.loading);
     try {
       final result = await _postService.getAllPost();
       _posts = result.data;
       notifyListeners();
+      setStateAction(StateAction.none);
     } on DioError catch (error) {
+      setStateAction(StateAction.error);
       print(error.response?.data);
     }
   }
@@ -109,6 +114,42 @@ class PostListNotifier extends ChangeNotifier
     final result = await _likeService.doDislikePost(postId);
     getAllPost();
     return result;
+  }
+
+  /// Only Trigger in Post Search Screen
+  Iterable<PostData> get postsInSearch => _postsInSearch;
+  Iterable<PostData> _postsInSearch = [];
+
+  Future<void> getPostsInSearch() async {
+    setStateActionSearch(StateAction.loading);
+    try {
+      final results = await _postService.getAllPost();
+      _postsInSearch = results.data;
+      notifyListeners();
+      setStateActionSearch(StateAction.none);
+    } on DioError catch (_) {
+      setStateActionSearch(StateAction.error);
+    }
+  }
+
+  void searchPost(String input) async {
+    if (input.isEmpty) {
+      getPostsInSearch();
+      return;
+    }
+
+    setStateActionSearch(StateAction.loading);
+    try {
+      final results = await _postService.getAllPost();
+      _postsInSearch = results.data.where((e) {
+        return e.title.toLowerCase().contains(input.toLowerCase()) ||
+            e.topic.name.toLowerCase().contains(input.toLowerCase());
+      });
+      notifyListeners();
+      setStateActionSearch(StateAction.none);
+    } on DioError catch (_) {
+      setStateActionSearch(StateAction.error);
+    }
   }
 }
 
