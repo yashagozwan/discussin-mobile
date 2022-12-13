@@ -118,44 +118,50 @@ class _SectionListState extends ConsumerState<SectionList> {
                         ),
                       ),
                     ),
-                    title: Row(
-                      children: [
-                        Text(
-                          post.user.username,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
+                    title: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Text(
+                            post.user.username,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: FollowButton(post: post),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: FollowButton(post: post),
+                          ),
+                        ],
+                      ),
                     ),
-                    subtitle: Row(
-                      children: [
-                        TextPro(
-                          post.topic.name,
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        const TextPro(
-                          '-',
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        TextPro(
-                          timeFormat(post.createdAt),
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                      ],
+                    subtitle: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          TextPro(
+                            post.topic.name,
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const TextPro(
+                            '-',
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          TextPro(
+                            timeFormat(post.createdAt),
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
                     ),
                     trailing: BookmarkButton(
                       post: post,
