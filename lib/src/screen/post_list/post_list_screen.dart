@@ -3,6 +3,7 @@ import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart'
 import 'package:discussin_mobile/src/screen/post_list/widget/bookmark_button.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/util/time_format.dart';
 import 'package:discussin_mobile/src/view_model/post_follow_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
@@ -144,10 +145,10 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   }
 
   Widget _buildList() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final viewModel = ref.watch(postListViewModel);
-        final posts = viewModel.posts;
+    final viewModel = ref.watch(postListViewModel);
+    final posts = viewModel.posts;
+    switch (viewModel.actionState) {
+      case StateAction.none:
         return ListView.separated(
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
           itemBuilder: (context, index) {
@@ -387,7 +388,12 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           separatorBuilder: (context, index) => const SizedBox(),
           itemCount: posts.length,
         );
-      },
-    );
+      case StateAction.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      case StateAction.error:
+        return const SizedBox.shrink();
+    }
   }
 }

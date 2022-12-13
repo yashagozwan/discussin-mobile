@@ -1,10 +1,11 @@
-import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
-import 'package:discussin_mobile/src/screen/post_search/widget/card_text.dart';
-import 'package:discussin_mobile/src/util/colors.dart';
-import 'package:discussin_mobile/src/view_model/post_search_view_model.dart';
-import 'package:discussin_mobile/src/widget/text_pro.dart';
+import 'package:discussin_mobile/src/screen/post_search/widget/section_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../util/colors.dart';
+import '../../view_model/post_search_view_model.dart';
+import '../../widget/text_pro.dart';
+import '../post_notification/post_notification_screen.dart';
+import 'widget/card_text.dart';
 
 class PostSearchScreen extends ConsumerStatefulWidget {
   const PostSearchScreen({super.key});
@@ -16,13 +17,40 @@ class PostSearchScreen extends ConsumerStatefulWidget {
 
 class _PostSearchScreenState extends ConsumerState<PostSearchScreen> {
   final _searchController = TextEditingController();
+  final _onFocus = FocusNode();
+  late final PostSearchNotifier _viewModel;
+
+  Future<void> _initial() async {
+    Future(() {
+      _viewModel = ref.read(postSearchViewModel);
+      _searchController.text = _viewModel.inputSearch;
+    });
+
+    _searchController.addListener(() {
+      _viewModel.setInputSearch(_searchController.text);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initial();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F8FA),
       appBar: _buildAppBar(),
       body: _buildContent(),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _onFocus.dispose();
+    _searchController.dispose();
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -30,6 +58,7 @@ class _PostSearchScreenState extends ConsumerState<PostSearchScreen> {
       backgroundColor: Colors.white,
       iconTheme: const IconThemeData(color: grey),
       title: TextField(
+        focusNode: _onFocus,
         controller: _searchController,
         keyboardType: TextInputType.text,
         style: const TextStyle(
@@ -68,6 +97,14 @@ class _PostSearchScreenState extends ConsumerState<PostSearchScreen> {
   }
 
   Widget _buildContent() {
+    final viewModel = ref.watch(postSearchViewModel);
+    final inputSearch = viewModel.inputSearch;
+
+    // Show another widget if field is not empty
+    if (inputSearch.isNotEmpty) {
+      return const SectionList();
+    }
+
     return ListView(
       padding: const EdgeInsets.all(18),
       physics: const BouncingScrollPhysics(),
