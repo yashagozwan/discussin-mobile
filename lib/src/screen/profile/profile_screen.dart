@@ -116,23 +116,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.logout,
-              color: deepBlue,
-            ),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const SignInScreen();
-                  },
-                ),
-              );
-              ref.read(profileViewModel).removeToken();
-            },
-          ),
           Consumer(
             builder: (context, ref, child) {
               final viewModel = ref.watch(profileViewModel);
@@ -454,7 +437,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
                   splashColor:
                       const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const SettingScreen();
+                      }),
+                    );
+                  },
                   child: SizedBox(
                     width: 350,
                     child: Padding(
