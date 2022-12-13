@@ -7,6 +7,7 @@ import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/util/time_format.dart';
 import 'package:discussin_mobile/src/view_model/post_detail_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
+import 'package:discussin_mobile/src/widget/follow_button.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -131,15 +132,9 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Follow',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: primaryBlue,
-                          ),
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: FollowButton(post: post),
                       ),
                     ],
                   ),

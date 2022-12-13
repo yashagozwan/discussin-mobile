@@ -66,28 +66,27 @@ class PostListNotifier extends ChangeNotifier
     }
   }
 
+  Future<void> reloadAllPost() async {
+    final result = await _postService.getAllPost();
+    _posts = result.data;
+    notifyListeners();
+  }
+
   void setSelectedTopic(String newTopic) {
     _selectedTopic = newTopic;
     notifyListeners();
   }
 
   Future<void> createBookmark(int postId) async {
-    setStateAction(StateAction.loading);
-    try {
-      await _bookmarkService.createBookmark(postId);
-      setStateAction(StateAction.none);
-    } on DioError catch (error) {
-      setStateAction(StateAction.error);
-      print(error.response?.data);
-    }
-    getAllPost();
+    await _bookmarkService.createBookmark(postId);
+    reloadAllPost();
   }
 
   Future<void> deleteSingleBookmark(int postId) async {
     final bookmarks = await _bookmarkService.getBookmark();
     final bookmark = bookmarks.data.firstWhere((e) => e.post.id == postId);
     await _bookmarkService.deleteBookmark(bookmark.id);
-    getAllPost();
+    reloadAllPost();
   }
 
   Future<bool> isSaveable(PostData post) async {
@@ -105,14 +104,14 @@ class PostListNotifier extends ChangeNotifier
   @override
   Future<bool> doLikePost(int postId) async {
     final result = await _likeService.doLikePost(postId);
-    getAllPost();
+    reloadAllPost();
     return result;
   }
 
   @override
   Future<bool> doDislikePost(int postId) async {
     final result = await _likeService.doDislikePost(postId);
-    getAllPost();
+    reloadAllPost();
     return result;
   }
 

@@ -7,6 +7,7 @@ import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/util/time_format.dart';
 import 'package:discussin_mobile/src/view_model/post_follow_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
+import 'package:discussin_mobile/src/widget/follow_button.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +26,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
   Future<void> _initial() async {
     Future(() {
       final viewModel = ref.read(postListViewModel);
-      viewModel.getAllPost();
+      viewModel.reloadAllPost();
       viewModel.getTopics();
     });
   }
@@ -196,73 +197,50 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                         ),
                       ),
                     ),
-                    title: Row(
-                      children: [
-                        Text(
-                          post.user.username,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: InkWell(
-                            customBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            splashColor: Colors.black12,
-                            onTap: () {
-                              ref
-                                  .read(postFollowViewModel)
-                                  .createFollow(post.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    '${post.title} Followed',
-                                  ),
-                                ),
-                              );
-                            },
-                            child: const SizedBox(
-                              width: 70,
-                              child: Center(
-                                child: Text(
-                                  'Follow',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: primaryBlue,
-                                  ),
-                                ),
-                              ),
+                    title: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Text(
+                            post.user.username,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: FollowButton(post: post),
+                          ),
+                        ],
+                      ),
                     ),
-                    subtitle: Row(
-                      children: [
-                        TextPro(
-                          post.topic.name,
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        const TextPro(
-                          '-',
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        TextPro(
-                          timeFormat(post.createdAt),
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                      ],
+                    subtitle: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          TextPro(
+                            post.topic.name,
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const TextPro(
+                            '-',
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          TextPro(
+                            timeFormat(post.createdAt),
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
                     ),
                     trailing: BookmarkButton(
                       post: post,

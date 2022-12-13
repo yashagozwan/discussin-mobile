@@ -26,6 +26,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(postFollowViewModel);
     return FutureBuilder<bool>(
+      future: viewModel.isFollowable(widget.post),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -37,12 +38,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
               ),
               splashColor: Colors.black12,
               onTap: () {},
-              child: SizedBox(
-                width: 60,
-                child: Center(
-                  child: getText(isFollowable),
-                ),
-              ),
+              child: getText(isFollowable),
             );
           case ConnectionState.active:
             return const SizedBox.shrink();
@@ -81,12 +77,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
                 }
                 ref.read(postFollowViewModel).reloadFollow();
               },
-              child: SizedBox(
-                width: 60,
-                child: Center(
-                  child: getText(isFollowable),
-                ),
-              ),
+              child: getText(isFollowable),
             );
         }
       },
@@ -95,22 +86,32 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
 
   Widget getText(bool value) {
     if (value) {
-      return const Text.rich(
-        TextSpan(
-          text: "Follow",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: primaryBlue,
+      return const SizedBox(
+        width: 60,
+        child: Center(
+          child: Text.rich(
+            TextSpan(
+              text: "Follow",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: primaryBlue,
+              ),
+            ),
           ),
         ),
       );
     } else {
-      return const Text.rich(
-        TextSpan(
-          text: "Followed",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: primaryBlue,
+      return const SizedBox(
+        width: 80,
+        child: Center(
+          child: Text.rich(
+            TextSpan(
+              text: "Followed",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: primaryBlue,
+              ),
+            ),
           ),
         ),
       );

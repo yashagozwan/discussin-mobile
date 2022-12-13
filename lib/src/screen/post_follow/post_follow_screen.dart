@@ -127,13 +127,13 @@ class _PostFollowScreenState extends ConsumerState<PostFollowScreen> {
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Text(
-                              'John Legend',
+                              follow.user.username,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
-                          Icon(
+                          const Icon(
                             Icons.play_arrow,
                             color: Colors.black,
                             size: 20,
