@@ -21,7 +21,7 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
 
   Future<void> _initial() async {
     Future(() {
-      final viewModel = ref.read(bookmarkViewModel);
+      final viewModel = ref.read(postBookmarkViewModel);
       viewModel.getBookmark();
     });
   }
@@ -75,7 +75,7 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
   Widget _buildPostBookmark() {
     return Consumer(
       builder: (context, ref, child) {
-        final viewModel = ref.watch(bookmarkViewModel);
+        final viewModel = ref.watch(postBookmarkViewModel);
 
         final bookmarks = viewModel.bookmarks;
         if (bookmarks.isEmpty) {
@@ -97,7 +97,7 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
                   ListTile(
                     leading: ClipRRect(
                       child: CachedNetworkImage(
-                        imageUrl: '',
+                        imageUrl: bookmark.user.photo,
                         imageBuilder: (context, imageProvider) => Container(
                           width: 55.0,
                           height: 55.0,

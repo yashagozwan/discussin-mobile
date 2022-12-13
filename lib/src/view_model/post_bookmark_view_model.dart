@@ -44,6 +44,6 @@ class PostBookmarkNotifier extends ChangeNotifier with FiniteState {
   }
 }
 
-final bookmarkViewModel = ChangeNotifierProvider((ref) {
+final postBookmarkViewModel = ChangeNotifierProvider((ref) {
   return PostBookmarkNotifier();
 });

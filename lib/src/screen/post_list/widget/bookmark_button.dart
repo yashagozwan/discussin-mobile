@@ -68,7 +68,7 @@ class _BookmarkButtonState extends ConsumerState<BookmarkButton> {
                     );
                   }
                 }
-                ref.read(bookmarkViewModel).reloadBookmark();
+                ref.read(postBookmarkViewModel).reloadBookmark();
               },
               icon: getIcon(isSaveable),
             );

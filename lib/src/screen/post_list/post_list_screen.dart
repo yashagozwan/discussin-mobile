@@ -3,6 +3,8 @@ import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart'
 import 'package:discussin_mobile/src/screen/post_list/widget/bookmark_button.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
+import 'package:discussin_mobile/src/util/time_format.dart';
+import 'package:discussin_mobile/src/view_model/post_follow_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +158,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                   ListTile(
                     leading: ClipRRect(
                       child: CachedNetworkImage(
-                        imageUrl: '',
+                        imageUrl: post.user.photo,
                         imageBuilder: (context, imageProvider) => Container(
                           width: 55.0,
                           height: 55.0,
@@ -201,13 +203,36 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'Follow',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: primaryBlue,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: InkWell(
+                            customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            splashColor: Colors.black12,
+                            onTap: () {
+                              ref
+                                  .read(postFollowViewModel)
+                                  .createFollow(post.id);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '${post.title} Followed',
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const SizedBox(
+                              width: 70,
+                              child: Center(
+                                child: Text(
+                                  'Follow',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: primaryBlue,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -215,29 +240,26 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                     ),
                     subtitle: Row(
                       children: [
-                        Text(
+                        TextPro(
                           post.topic.name,
-                          style: const TextStyle(
-                            color: Colors.black,
-                          ),
+                          color: Colors.black,
+                          fontSize: 12,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
+                        const TextPro(
                           '-',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
+                          color: Colors.black,
+                          fontSize: 12,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          '3 Min Ago',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
+                        TextPro(
+                          timeFormat(post.createdAt),
+                          color: Colors.black,
+                          fontSize: 12,
                         ),
                       ],
                     ),

@@ -4,6 +4,7 @@ import 'package:discussin_mobile/src/screen/post_list/widget/bookmark_button.dar
 import 'package:discussin_mobile/src/service/comment_service.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
+import 'package:discussin_mobile/src/util/time_format.dart';
 import 'package:discussin_mobile/src/view_model/post_detail_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
@@ -83,72 +84,92 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
             return Column(
               children: [
                 ListTile(
-                    leading: ClipRRect(
-                      child: CachedNetworkImage(
-                        imageUrl: '',
-                        imageBuilder: (context, imageProvider) => Container(
-                          width: 55.0,
-                          height: 55.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
+                  leading: ClipRRect(
+                    child: CachedNetworkImage(
+                      imageUrl: post.user.photo,
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: 55.0,
+                        height: 55.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        placeholder: (context, url) => const SizedBox(
-                          width: 55,
-                          height: 55,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                      ),
+                      placeholder: (context, url) => const SizedBox(
+                        width: 55,
+                        height: 55,
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
-                        errorWidget: (context, url, error) => Container(
-                          width: 55,
-                          height: 55,
-                          decoration: const BoxDecoration(
-                            color: yellow,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(100),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        width: 55,
+                        height: 55,
+                        decoration: const BoxDecoration(
+                          color: yellow,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100),
+                          ),
+                          image: DecorationImage(
+                            image: Svg(
+                              'assets/svg/avatar.svg',
                             ),
-                            image: DecorationImage(
-                              image: Svg(
-                                'assets/svg/avatar.svg',
-                              ),
-                              fit: BoxFit.cover,
-                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
                     ),
-                    title: Row(
-                      children: [
-                        Text(
-                          post.user.username,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
+                  ),
+                  title: Row(
+                    children: [
+                      Text(
+                        post.user.username,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          'Follow',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: primaryBlue,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'Follow',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: primaryBlue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      post.topic.name,
-                      style: const TextStyle(
+                      ),
+                    ],
+                  ),
+                  subtitle: Row(
+                    children: [
+                      TextPro(
+                        post.topic.name,
                         color: Colors.black,
+                        fontSize: 13,
                       ),
-                    ),
-                    trailing: BookmarkButton(post: post)),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const TextPro(
+                        '-',
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      TextPro(
+                        timeFormat(post.createdAt),
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
+                    ],
+                  ),
+                  trailing: BookmarkButton(post: post),
+                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Column(
