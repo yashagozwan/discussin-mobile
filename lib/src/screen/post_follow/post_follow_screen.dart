@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/post_follow_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
@@ -78,152 +79,168 @@ class _PostFollowScreenState extends ConsumerState<PostFollowScreen> {
             final follow = follows.elementAt(index);
             return Card(
               color: Colors.white,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 10, 0, 10),
-                    child: ListTile(
-                      leading: ClipRRect(
-                        child: CachedNetworkImage(
-                          imageUrl: '',
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: 50.0,
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          placeholder: (context, url) => const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            width: 50,
-                            height: 50,
-                            decoration: const BoxDecoration(
-                              color: yellow,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(100),
-                              ),
-                              image: DecorationImage(
-                                image: Svg(
-                                  'assets/svg/avatar.svg',
+              child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                splashColor: Colors.black12,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return PostDetailScreen(postId: follow.post.id);
+                      },
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 10, 0, 10),
+                      child: ListTile(
+                        leading: ClipRRect(
+                          child: CachedNetworkImage(
+                            imageUrl: follow.user.photo,
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: 50.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
                                 ),
-                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            placeholder: (context, url) => const SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              width: 50,
+                              height: 50,
+                              decoration: const BoxDecoration(
+                                color: yellow,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(100),
+                                ),
+                                image: DecorationImage(
+                                  image: Svg(
+                                    'assets/svg/avatar.svg',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      title: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                              follow.user.username.isEmpty
-                                  ? 'Anonymous'
-                                  : follow.user.username,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.play_arrow,
-                            color: Colors.black,
-                            size: 20,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              'Topic',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            follow.post.title,
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            follow.post.body,
-                            textAlign: TextAlign.justify,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        title: Row(
                           children: [
-                            InkWell(
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                follow.user.username.isEmpty
+                                    ? 'Anonymous'
+                                    : follow.user.username,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                              splashColor: Colors.black12,
-                              onTap: () {
-                                viewModel.deleteFollow(follow.post.id);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      '${follow.post.title} Is Deleted From Followed Discuss',
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const SizedBox(
-                                width: 60,
-                                child: Center(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      text: "Delete",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                        color: red,
-                                      ),
-                                    ),
-                                  ),
+                            ),
+                            const Icon(
+                              Icons.play_arrow,
+                              color: Colors.black,
+                              size: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                follow.post.postTopic,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              follow.post.title,
+                              textAlign: TextAlign.justify,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              follow.post.body,
+                              textAlign: TextAlign.justify,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                customBorder: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                splashColor: Colors.black12,
+                                onTap: () {
+                                  viewModel.deleteFollow(follow.post.id);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        '${follow.post.title} Is Deleted From Followed Discuss',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const SizedBox(
+                                  width: 60,
+                                  child: Center(
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: "Delete",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: red,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           },
