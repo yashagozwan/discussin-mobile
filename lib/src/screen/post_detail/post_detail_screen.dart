@@ -7,6 +7,7 @@ import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/util/time_format.dart';
 import 'package:discussin_mobile/src/view_model/post_detail_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
+import 'package:discussin_mobile/src/view_model/profile_view_model.dart';
 import 'package:discussin_mobile/src/widget/follow_button.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +27,15 @@ class PostDetailScreen extends ConsumerStatefulWidget {
 class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
   final _commentController = TextEditingController();
   late PostDetailNotifier viewModel;
+  late ProfileNotifier viewModelUser;
 
   Future<void> _initial() async {
     Future(() {
       viewModel = ref.read(postDetailViewModel);
+      viewModelUser = ref.read(profileViewModel);
       viewModel.getPostById(widget.postId);
       viewModel.getCommentById(widget.postId);
+      viewModelUser.getUser();
     });
   }
 
@@ -77,6 +81,8 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final viewModel = ref.watch(postDetailViewModel);
+        final viewModelUser = ref.watch(profileViewModel);
+        final user = viewModelUser.user;
         final post = viewModel.post;
         switch (viewModel.actionState) {
           case StateAction.none:
@@ -272,7 +278,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                 ),
                 ListTile(
                   leading: CachedNetworkImage(
-                    imageUrl: '',
+                    imageUrl: user?.photo ?? '',
                     imageBuilder: (context, imageProvider) => Container(
                       width: 40.0,
                       height: 40.0,

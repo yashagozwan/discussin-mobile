@@ -1,14 +1,17 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/screen/home/home_screen.dart';
 import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/view_model/home_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_create_view_model.dart';
+import 'package:discussin_mobile/src/view_model/profile_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PostCreateScreen extends ConsumerStatefulWidget {
@@ -25,11 +28,14 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
   late final PostCreateNotifier _viewModel;
+  late ProfileNotifier viewModelUser;
 
   Future<void> _initial() async {
     Future(() {
       _viewModel = ref.read(postCreateViewModel);
       _viewModel.getTopics();
+
+      ref.read(profileViewModel).getUser();
 
       _titleController.text = _viewModel.title;
       _bodyController.text = _viewModel.body;
@@ -73,7 +79,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
           _buildFormAndImage(),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavigation(),
+      floatingActionButton: _buildBottomNavigation(),
     );
   }
 
@@ -251,12 +257,49 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
   }
 
   Widget _buildCurrentAccount() {
+    final user = ref.watch(profileViewModel).user;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 30,
+          ClipRRect(
+            child: CachedNetworkImage(
+              imageUrl: user?.photo ?? '',
+              imageBuilder: (context, imageProvider) => Container(
+                width: 60.0,
+                height: 60.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) => const SizedBox(
+                width: 60,
+                height: 60,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: yellow,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(100),
+                  ),
+                  image: DecorationImage(
+                    image: Svg(
+                      'assets/svg/avatar.svg',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
           ),
           const SizedBox(width: 16),
           Consumer(
@@ -479,6 +522,7 @@ class _PostCreateScreenState extends ConsumerState<PostCreateScreen> {
   Widget? _buildBottomNavigation() {
     if (ref.watch(postCreateViewModel).xFile == null) {
       return Container(
+        margin: const EdgeInsets.only(left: 15),
         padding: const EdgeInsets.all(24),
         child: Row(
           children: [

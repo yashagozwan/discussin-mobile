@@ -22,6 +22,20 @@ class PostListNotifier extends ChangeNotifier
 
   String get selectedTopic => _selectedTopic;
 
+  Future<void> getPostByLeaderboard() async {
+    setStateAction(StateAction.loading);
+    try {
+      final result = await _postService.getAllPost();
+      result.data.sort((a, b) => a.count.like.compareTo(b.count.like));
+      _posts = result.data.reversed;
+      notifyListeners();
+      setStateAction(StateAction.none);
+    } on DioError catch (error) {
+      setStateAction(StateAction.error);
+      print(error.response?.data);
+    }
+  }
+
   Iterable<PostData> get posts => _posts;
   Iterable<PostData> _posts = [];
 

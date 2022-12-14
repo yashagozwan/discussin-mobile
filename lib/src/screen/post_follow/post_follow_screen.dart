@@ -127,7 +127,9 @@ class _PostFollowScreenState extends ConsumerState<PostFollowScreen> {
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Text(
-                              follow.user.username,
+                              follow.user.username.isEmpty
+                                  ? 'Anonymous'
+                                  : follow.user.username,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                               ),

@@ -19,6 +19,7 @@ class CommentList extends ConsumerStatefulWidget {
 
 class _CommentListState extends ConsumerState<CommentList> {
   late Iterable<CommentData> comments;
+
   Future<void> _initial() async {
     comments = widget.comments;
     Future(() {});
@@ -57,7 +58,7 @@ class _CommentListState extends ConsumerState<CommentList> {
               avatarRoot: (context, data) => PreferredSize(
                 preferredSize: const Size.fromRadius(18),
                 child: CachedNetworkImage(
-                  imageUrl: '',
+                  imageUrl: '${data.avatar}',
                   imageBuilder: (context, imageProvider) => Container(
                     width: 40.0,
                     height: 40.0,
@@ -92,69 +93,6 @@ class _CommentListState extends ConsumerState<CommentList> {
                   ),
                 ),
               ),
-              avatarChild: (context, data) => const PreferredSize(
-                preferredSize: Size.fromRadius(12),
-                child: CircleAvatar(
-                  radius: 12,
-                  backgroundColor: Colors.grey,
-                ),
-              ),
-              contentChild: (context, data) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${data.userName}',
-                            style:
-                                Theme.of(context).textTheme.caption?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    ),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            '${data.content}',
-                            style:
-                                Theme.of(context).textTheme.caption?.copyWith(
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black,
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    DefaultTextStyle(
-                      style: Theme.of(context).textTheme.caption!.copyWith(
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.bold,
-                          ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Row(
-                          children: const [
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Text('Reply'),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              },
               contentRoot: (context, data) {
                 return Padding(
                   padding: const EdgeInsets.only(left: 9.0),
