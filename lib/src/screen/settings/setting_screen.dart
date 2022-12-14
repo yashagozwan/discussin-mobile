@@ -27,6 +27,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),

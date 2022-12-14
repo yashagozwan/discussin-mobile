@@ -15,7 +15,7 @@ void main() {
     test('Login', () async {
       try {
         final result = await authService.login(
-          SignIn(email: 'kecoaterbang@gmail.com', password: 'kecoaterbang'),
+          SignIn(email: 'kaliber@gmail.com', password: 'Kaliber123'),
         );
 
         print(result.data.token);
@@ -28,10 +28,10 @@ void main() {
     test('Register', () async {
       try {
         final result = await authService.register(SignUp(
-          username: 'yukino',
-          email: 'yukino@gmail.com',
-          password: '12345Mantap',
-          isAdmin: true,
+          username: 'kaliber',
+          email: 'kaliber@gmail.com',
+          password: 'Kaliber123',
+          isAdmin: false,
         ));
 
         print(result);

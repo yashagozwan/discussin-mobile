@@ -221,7 +221,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     children: [
                       Container(
                         padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                        child: prviewImage(user!.photo),
+                        child: prviewImage(user?.photo ?? ''),
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(100, 110, 0, 0),
@@ -250,11 +250,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextPro(
-                          user.username,
+                          user?.username ?? '',
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
-                        Text(user.email),
+                        Text(user?.email ?? ''),
                       ],
                     ),
                   )
