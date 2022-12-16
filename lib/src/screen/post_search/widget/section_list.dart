@@ -65,7 +65,7 @@ class _SectionListState extends ConsumerState<SectionList> {
           return const Center(
             child: TextPro(
               'Post Is Not Found',
-              fontSize: 24,
+              fontSize: 14,
             ),
           );
         }

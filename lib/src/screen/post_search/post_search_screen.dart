@@ -1,4 +1,6 @@
+import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart';
 import 'package:discussin_mobile/src/screen/post_search/widget/section_list.dart';
+import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../util/colors.dart';
@@ -19,11 +21,15 @@ class _PostSearchScreenState extends ConsumerState<PostSearchScreen> {
   final _searchController = TextEditingController();
   final _onFocus = FocusNode();
   late final PostSearchNotifier _viewModel;
+  late PostListNotifier viewModel;
 
   Future<void> _initial() async {
     Future(() {
       _viewModel = ref.read(postSearchViewModel);
       _searchController.text = _viewModel.inputSearch;
+
+      viewModel = ref.read(postListViewModel);
+      viewModel.getTrendingPost();
     });
 
     _searchController.addListener(() {
@@ -110,24 +116,40 @@ class _PostSearchScreenState extends ConsumerState<PostSearchScreen> {
       physics: const BouncingScrollPhysics(),
       children: [
         const TextPro(
-          'Trend for you',
+          'Trending Today',
           fontWeight: FontWeight.w600,
           fontSize: 20,
         ),
         const SizedBox(height: 8 * 2),
-        ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            final data = PostSearchNotifier.getTrends().elementAt(index);
-            return CardText(
-              headTitle: data.headTitle,
-              bodyTitle: data.bodyTitle,
-              subTitle: data.subTitle,
+        Consumer(
+          builder: (context, ref, child) {
+            final viewModel = ref.watch(postListViewModel);
+            final posts = viewModel.posts;
+            return ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final trend = posts.elementAt(index);
+                return CardText(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return PostDetailScreen(postId: trend.id);
+                        },
+                      ),
+                    );
+                  },
+                  headTitle: 'Trending In ${trend.topic.name}',
+                  bodyTitle: trend.title,
+                  subTitle: '${trend.count.like} Likes',
+                );
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              itemCount: posts.length,
             );
           },
-          separatorBuilder: (context, index) => const SizedBox(height: 16),
-          itemCount: PostSearchNotifier.getTrends().length,
         ),
         const SizedBox(height: 16),
         const TextPro(

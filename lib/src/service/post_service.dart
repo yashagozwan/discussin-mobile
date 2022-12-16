@@ -35,6 +35,15 @@ class PostService {
     }
   }
 
+  Future<PostResponse> getTrendingPost() async {
+    try {
+      final results = await _client.get('/posts/recents/top');
+      return PostResponse.fromMap(results.data);
+    } on DioError {
+      rethrow;
+    }
+  }
+
   Future<bool> createPostByTopic(String topicName, PostModel post) async {
     try {
       await _client.post('/posts/create/$topicName', data: post.toMap());
@@ -57,7 +66,6 @@ class PostService {
     try {
       final result = await _client.get('/posts/$postId');
       return PostDetailResponse.fromMap(result.data);
-
     } on DioError {
       rethrow;
     }

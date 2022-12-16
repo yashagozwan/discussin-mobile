@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/model/topic_response_model.dart' as tpc;
 import 'package:discussin_mobile/src/service/bookmark_service.dart';
+import 'package:discussin_mobile/src/service/follow_service.dart';
 import 'package:discussin_mobile/src/service/like_service.dart';
 import 'package:discussin_mobile/src/service/post_service.dart';
 import 'package:discussin_mobile/src/service/topic_service.dart';
@@ -17,6 +18,7 @@ class PostListNotifier extends ChangeNotifier
   final _bookmarkService = BookmarkService();
   final _postService = PostService();
   final _topicService = TopicService();
+  final _followService = FollowService();
 
   String _selectedTopic = 'All';
 
@@ -28,6 +30,29 @@ class PostListNotifier extends ChangeNotifier
       final result = await _postService.getAllPost();
       result.data.sort((a, b) => a.count.like.compareTo(b.count.like));
       _posts = result.data.reversed;
+      notifyListeners();
+      setStateAction(StateAction.none);
+    } on DioError catch (error) {
+      setStateAction(StateAction.error);
+      print(error.response?.data);
+    }
+  }
+
+  Future<void> getFollowPost() async {
+    setStateAction(StateAction.loading);
+    try {
+      final posts = await _postService.getAllPost();
+      final followed = await _followService.getFollow();
+      List<PostData> followedposts = [];
+      for (var i = 0; i < followed.data.length; i++) {
+        for (var j = 0; j < posts.data.length; j++) {
+          if (followed.data.elementAt(i).post.id ==
+              posts.data.elementAt(j).id) {
+            followedposts.add(posts.data.elementAt(j));
+          }
+        }
+      }
+      _posts = followedposts;
       notifyListeners();
       setStateAction(StateAction.none);
     } on DioError catch (error) {
@@ -52,13 +77,31 @@ class PostListNotifier extends ChangeNotifier
     }
   }
 
+  Future<void> getTrendingPost() async {
+    setStateAction(StateAction.loading);
+    try {
+      final result = await _postService.getTrendingPost();
+      _posts = result.data;
+      notifyListeners();
+      setStateAction(StateAction.none);
+    } on DioError catch (error) {
+      setStateAction(StateAction.error);
+      print(error.response?.data);
+    }
+  }
+
   Iterable<tpc.Topic> get topics => _topics;
   Iterable<tpc.Topic> _topics = [];
 
   Future<void> getTopics() async {
     try {
       final result = await _topicService.getTopics();
-      _topics = {tpc.Topic(name: 'All', description: ''), ...result.data};
+      _topics = {
+        tpc.Topic(name: 'All', description: ''),
+        tpc.Topic(name: 'Trending', description: ''),
+        tpc.Topic(name: 'Followed', description: ''),
+        ...result.data
+      };
       notifyListeners();
     } on DioError catch (error) {
       print(error.response?.data);
@@ -70,6 +113,11 @@ class PostListNotifier extends ChangeNotifier
       if (topic == 'All') {
         final result = await _postService.getAllPost();
         _posts = result.data;
+      } else if (topic == 'Trending') {
+        final result = await _postService.getTrendingPost();
+        _posts = result.data;
+      } else if (topic == 'Followed') {
+        await getFollowPost();
       } else {
         final result = await _postService.getPostsByTopic(topic);
         _posts = result.data;

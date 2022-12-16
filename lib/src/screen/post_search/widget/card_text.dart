@@ -5,19 +5,21 @@ class CardText extends StatelessWidget {
   final String headTitle;
   final String bodyTitle;
   final String subTitle;
+  final Function() onTap;
 
   const CardText({
     super.key,
     required this.headTitle,
     required this.bodyTitle,
     required this.subTitle,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: Colors.black12,
-      onTap: () {},
+      onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -31,7 +33,7 @@ class CardText extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           TextPro(
-            subTitle,
+            subTitle.toString(),
             fontSize: 12,
           ),
         ],

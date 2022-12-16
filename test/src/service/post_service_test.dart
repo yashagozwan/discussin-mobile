@@ -27,6 +27,16 @@ Future<void> main() async {
       }
     });
 
+    test('Get Trending Post', () async {
+      try {
+        final result = await postService.getTrendingPost();
+        print(result);
+      } on DioError catch (error) {
+        print(error.message);
+        print(error.response?.data);
+      }
+    });
+
     test('Get Posts By Topic', () async {
       try {
         const topicName = 'Music';
