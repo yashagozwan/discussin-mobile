@@ -72,8 +72,8 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
               child: _buildTopicList(),
             ),
           ),
-          SizedBox(
-            height: 580,
+          Expanded(
+            flex: 7,
             child: _buildList(),
           ),
         ],

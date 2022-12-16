@@ -59,16 +59,7 @@ class _PostBookmarkScreenState extends ConsumerState<PostBookmarkScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 660,
-              child: _buildPostBookmark(),
-            ),
-          ],
-        ),
-      ),
+      body: _buildPostBookmark(),
     );
   }
 

@@ -45,16 +45,7 @@ class _PostFollowScreenState extends ConsumerState<PostFollowScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 660,
-              child: _buildPostFollow(),
-            ),
-          ],
-        ),
-      ),
+      body: _buildPostFollow(),
     );
   }
 
