@@ -1,4 +1,12 @@
+import 'dart:async';
+
+import 'package:discussin_mobile/src/model/sign_in_model.dart';
+import 'package:discussin_mobile/src/screen/home/home_screen.dart';
+import 'package:discussin_mobile/src/screen/sign_in/widget/sign_in_failure.dart';
+import 'package:discussin_mobile/src/screen/sign_in/widget/sign_in_success.dart';
 import 'package:discussin_mobile/src/screen/sign_in/widget/text_field_password.dart';
+import 'package:discussin_mobile/src/util/finite_state.dart';
+import 'package:discussin_mobile/src/view_model/sign_in_view_model.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +22,21 @@ class SignInScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
+  late SignInNotifier viewModel;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<void> _initial() async {
+    Future(() {
+      viewModel = ref.read(signInViewModel);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initial();
+  }
 
   @override
   void dispose() {
@@ -111,11 +132,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _loginAction,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xffFBEB23),
                       foregroundColor: Colors.black54,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -163,6 +184,62 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _loginAction() async {
+    final signIn = SignIn(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    viewModel.signIn(signIn);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: Consumer(
+            builder: (context, ref, child) {
+              final viewModel = ref.watch(signInViewModel);
+
+              switch (viewModel.actionState) {
+                case StateAction.none:
+                  Future.delayed(const Duration(milliseconds: 1000), () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const HomeScreen();
+                        },
+                      ),
+                      (route) => false,
+                    );
+                  });
+                  return const SignInSuccess();
+                case StateAction.loading:
+                  return _signInLoading();
+                case StateAction.error:
+                  return SignInFailure(
+                    message: viewModel.errorMessage ?? '',
+                    onPressed: () => Navigator.pop(context),
+                  );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _signInLoading() {
+    return Container(
+      width: 100,
+      height: 100,
+      alignment: Alignment.center,
+      child: const CircularProgressIndicator(),
     );
   }
 }

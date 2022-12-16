@@ -30,6 +30,7 @@ class TextFormFieldPro extends StatelessWidget {
         obscureText: obscureText,
         controller: controller,
         decoration: InputDecoration(
+          errorStyle: const TextStyle(height: 0),
           border: InputBorder.none,
           isDense: true,
           hintText: hintText,
