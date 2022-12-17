@@ -243,9 +243,6 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                           IconButton(
                             icon: const Icon(Icons.thumb_up_alt_outlined),
                             onPressed: () {
-                              ref
-                                  .read(postListViewModel)
-                                  .doLikePost(widget.postId);
                               viewModel.doLikePost(widget.postId);
                             },
                           ),
@@ -255,9 +252,6 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
                           IconButton(
                             icon: const Icon(Icons.thumb_down_alt_outlined),
                             onPressed: () {
-                              ref
-                                  .read(postListViewModel)
-                                  .doDislikePost(widget.postId);
                               viewModel.doDislikePost(widget.postId);
                             },
                           ),
