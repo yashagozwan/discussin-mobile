@@ -5,7 +5,6 @@ import 'package:discussin_mobile/src/screen/post_notification/post_notification_
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/util/time_format.dart';
-import 'package:discussin_mobile/src/view_model/post_follow_view_model.dart';
 import 'package:discussin_mobile/src/view_model/post_list_view_model.dart';
 import 'package:discussin_mobile/src/widget/follow_button.dart';
 import 'package:discussin_mobile/src/widget/text_pro.dart';
@@ -67,10 +66,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
       body: Column(
         children: [
           Flexible(
-            child: SizedBox(
-              height: 80,
-              child: _buildTopicList(),
-            ),
+            child: _buildTopicList(),
           ),
           Expanded(
             flex: 7,
@@ -104,7 +100,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
                       final selectedTopic = viewModel.selectedTopic;
                       return Container(
                         width: 120,
-                        padding: const EdgeInsets.all(10),
+                        height: 35,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: primaryBlue,
