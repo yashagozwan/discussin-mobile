@@ -81,26 +81,37 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: InkWell(
-            splashColor: Colors.black45,
-            onTap: () {},
-            child: SizedBox(
-              width: 345,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  TextPro(
-                    "Account settings",
-                    fontSize: 18,
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: SizedBox(
+            height: 55,
+            width: 385,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              highlightColor:
+                  const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
+              splashColor:
+                  const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
+              onTap: () {},
+              child: SizedBox(
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      TextPro(
+                        "Account settings",
+                        fontSize: 18,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 15,
         ),
         const Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -110,26 +121,37 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: InkWell(
-            splashColor: Colors.black45,
-            onTap: () {},
-            child: SizedBox(
-              width: 345,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  TextPro(
-                    "Notification",
-                    fontSize: 18,
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: SizedBox(
+            height: 55,
+            width: 385,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              highlightColor:
+                  const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
+              splashColor:
+                  const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
+              onTap: () {},
+              child: SizedBox(
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      TextPro(
+                        "Notification",
+                        fontSize: 18,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 15,
         ),
         const Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -139,7 +161,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(35, 10, 0, 0),
+          margin: const EdgeInsets.fromLTRB(35, 15, 0, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [
@@ -162,22 +184,56 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: InkWell(
-            splashColor: Colors.black45,
-            onTap: () {},
-            child: SizedBox(
-              width: 345,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  TextPro(
-                    "Notification",
-                    fontSize: 18,
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: SizedBox(
+            height: 55,
+            width: 385,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              highlightColor:
+                  const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
+              splashColor:
+                  const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
+              onTap: () {},
+              child: SizedBox(
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      TextPro(
+                        "Select Language",
+                        fontSize: 18,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Divider(
+            thickness: 1,
+            color: Colors.black45,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(35, 15, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              TextPro(
+                "Others",
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
+            ],
           ),
         ),
         const SizedBox(
@@ -191,35 +247,129 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: InkWell(
-            splashColor: Colors.black45,
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const SignInScreen();
-                  },
-                ),
-              );
-              ref.read(profileViewModel).removeToken();
-            },
-            child: SizedBox(
-              width: 345,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  TextPro(
-                    "Logout",
-                    color: Colors.red,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: SizedBox(
+            height: 55,
+            width: 385,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              highlightColor:
+                  const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
+              splashColor:
+                  const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
+              onTap: () {},
+              child: SizedBox(
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      TextPro(
+                        "About Discuss.In",
+                        fontSize: 18,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Divider(
+            thickness: 1,
+            color: Colors.black45,
+          ),
+        ),
+        SizedBox(
+          height: 55,
+          width: 385,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8),
+            highlightColor:
+                const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
+            splashColor:
+                const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
+            onTap: () {},
+            child: SizedBox(
+              width: 350,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    TextPro(
+                      "help & support",
+                      fontSize: 18,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Divider(
+            thickness: 1,
+            color: Colors.black45,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: SizedBox(
+            height: 55,
+            width: 385,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              highlightColor:
+                  const Color.fromARGB(255, 109, 118, 125).withOpacity(0.4),
+              splashColor:
+                  const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const SignInScreen();
+                    },
+                  ),
+                );
+                ref.read(profileViewModel).removeToken();
+              },
+              child: SizedBox(
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      TextPro(
+                        "Logout",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
         ),
       ],
     );
