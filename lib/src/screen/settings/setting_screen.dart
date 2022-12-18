@@ -335,13 +335,14 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
               splashColor:
                   const Color.fromARGB(255, 179, 207, 180).withOpacity(0.5),
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
                       return const SignInScreen();
                     },
                   ),
+                  (route) => false,
                 );
                 ref.read(profileViewModel).removeToken();
               },
