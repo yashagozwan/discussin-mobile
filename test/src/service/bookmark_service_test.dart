@@ -12,7 +12,7 @@ Future<void> main() async {
 
     test('Create Bookmark', () async {
       try {
-        const postId = 31;
+        const postId = 59;
         await bookmarkService.createBookmark(postId);
       } on DioError catch (error) {
         print(error.message);
@@ -31,7 +31,7 @@ Future<void> main() async {
 
     test('Delete Bookmark', () async {
       try {
-        const postId = 10;
+        const postId = 59;
         final result = await bookmarkService.deleteBookmark(postId);
       } on DioError catch (error) {
         print(error.message);
