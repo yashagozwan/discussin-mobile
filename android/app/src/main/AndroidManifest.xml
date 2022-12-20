@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yashagozwan.discussin_mobile">
+<uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="discussin_mobile"
+        android:label="DiscussIn"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
