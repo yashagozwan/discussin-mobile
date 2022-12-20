@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:discussin_mobile/src/model/follow_response_model.dart';
 import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/service/follow_service.dart';

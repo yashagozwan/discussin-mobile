@@ -1,12 +1,10 @@
 import 'package:discussin_mobile/src/screen/home/widget/show_bottom_sheet_create.dart';
 import 'package:discussin_mobile/src/screen/post_bookmark/post_bookmark_screen.dart';
-import 'package:discussin_mobile/src/screen/post_create/post_create_screen.dart';
 import 'package:discussin_mobile/src/screen/post_list/post_list_screen.dart';
 import 'package:discussin_mobile/src/screen/post_search/post_search_screen.dart';
 import 'package:discussin_mobile/src/screen/profile/profile_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/view_model/home_view_model.dart';
-import 'package:discussin_mobile/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

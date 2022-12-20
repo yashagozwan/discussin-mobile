@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:discussin_mobile/src/model/post_response_model.dart';
 import 'package:discussin_mobile/src/screen/post_detail/post_detail_screen.dart';
 import 'package:discussin_mobile/src/screen/post_list/widget/bookmark_button.dart';
 import 'package:discussin_mobile/src/util/colors.dart';

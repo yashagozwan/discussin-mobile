@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discussin_mobile/src/screen/post_follow/post_follow_screen.dart';
 import 'package:discussin_mobile/src/screen/post_notification/post_notification_screen.dart';
 import 'package:discussin_mobile/src/screen/settings/setting_screen.dart';
-import 'package:discussin_mobile/src/screen/sign_in/sign_in_screen.dart';
 import 'package:discussin_mobile/src/util/colors.dart';
 import 'package:discussin_mobile/src/util/finite_state.dart';
 import 'package:discussin_mobile/src/view_model/profile_view_model.dart';
