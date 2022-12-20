@@ -1,5 +1,7 @@
 # DiscussIn
 
+<img src="https://res.cloudinary.com/dfeenbdhb/image/upload/v1671523968/discussin/play_store_512_fsj5tv.png" width="200" />
+
 ## Members
 
 <table>
@@ -25,3 +27,10 @@
     </tr>
 
 </table>
+
+## Preview DiscussIn
+
+<div>
+    <img  src="https://res.cloudinary.com/dfeenbdhb/image/upload/v1671524544/discussin/preview-01_lnn6qv.gif" width="200"/>
+    <img  src="https://res.cloudinary.com/dfeenbdhb/image/upload/v1671524547/discussin/preview-02_rk0jyn.gif" width="200"/>
+</div>
