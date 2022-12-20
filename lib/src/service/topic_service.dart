@@ -10,11 +10,6 @@ class TopicService {
   final _client = DiscussinApi().getClient();
 
   Future<bool> createTopic(Topic topic) async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzAwMDE0NDMsImlkIjoxMSwidXNlcm5hbWUiOiJ5dWtpbm8ifQ.rW7otzk5Gg_tgTylBOoNJQNFUeSTlLkbFgjOSje3xag';
-
-    _client.options.headers['Authorization'] = 'Bearer $token';
-
     try {
       await _client.post('/topics/create', data: topic.toMap());
       return true;

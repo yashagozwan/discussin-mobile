@@ -27,10 +27,6 @@ class PostService {
   final _client = DiscussinApi().getClient();
 
   Future<PostResponse> getAllPost() async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODksInVzZXJuYW1lIjoidmVsb2N5cmFwdG9yeiJ9.tSCADlPnQCfoJpa5wAVPO_F4b_mkRQsf4qCC7tnZvIQ';
-
-    _client.options.headers['Authorization'] = 'Bearer $token';
     try {
       final results = await _client.get('/posts/recents');
       return PostResponse.fromMap(results.data);

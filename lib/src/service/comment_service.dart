@@ -29,10 +29,6 @@ class CommentService {
   }
 
   Future<bool> createComment(int postId, CommentModel comment) async {
-    // const token =
-    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoieXVraW5vIn0.6GykYja1z9lNSkZfpEL61D7QEv9L3ERDZrIp-wdrGMg';
-
-    // _client.options.headers['Authorization'] = 'Bearer $token';
     try {
       await _client.post('/posts/comments/create/$postId',
           data: comment.toMap());

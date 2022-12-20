@@ -6,10 +6,6 @@ class BookmarkService {
   final _client = DiscussinApi().getClient();
 
   Future<BookmarkResponse> getBookmark() async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODksInVzZXJuYW1lIjoidmVsb2N5cmFwdG9yeiJ9.tSCADlPnQCfoJpa5wAVPO_F4b_mkRQsf4qCC7tnZvIQ';
-
-    _client.options.headers['Authorization'] = 'Bearer $token';
     try {
       final result = await _client.get('/posts/bookmarks/all');
       return BookmarkResponse.fromMap(result.data);
@@ -19,10 +15,6 @@ class BookmarkService {
   }
 
   Future<void> createBookmark(int postId) async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODksInVzZXJuYW1lIjoidmVsb2N5cmFwdG9yeiJ9.tSCADlPnQCfoJpa5wAVPO_F4b_mkRQsf4qCC7tnZvIQ';
-
-    _client.options.headers['Authorization'] = 'Bearer $token';
     try {
       final result = await _client.post(
         '/posts/bookmarks/$postId',
@@ -33,10 +25,6 @@ class BookmarkService {
   }
 
   Future<void> deleteBookmark(int postId) async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODksInVzZXJuYW1lIjoidmVsb2N5cmFwdG9yeiJ9.tSCADlPnQCfoJpa5wAVPO_F4b_mkRQsf4qCC7tnZvIQ';
-
-    _client.options.headers['Authorization'] = 'Bearer $token';
     try {
       final result = await _client.delete('/posts/bookmarks/delete/$postId');
     } on DioError {
