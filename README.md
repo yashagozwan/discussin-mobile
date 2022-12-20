@@ -28,7 +28,7 @@
 
 </table>
 
-## Preview DiscussIn
+## Preview DiscussIn (Create Tread & Show Tread)
 
 <div>
     <img  src="https://res.cloudinary.com/dfeenbdhb/image/upload/v1671524544/discussin/preview-01_lnn6qv.gif" width="200"/>
