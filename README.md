@@ -12,7 +12,7 @@
     </tr>
     <tr>
         <td>Yasha Gozwan Shuhada</td>
-        <td>Univsersitas Bina Sarana Informatika</td>
+        <td>Universitas Bina Sarana Informatika</td>
         <td><a href="https://github.com/yashagozwan">yashagozwan</a></td>
     </tr>
      <tr>
@@ -22,7 +22,7 @@
     </tr>
      <tr>
         <td>Richo Wardiyanto</td>
-        <td>Univsersitas Bina Sarana Informatika</td>
+        <td>Universitas Bina Sarana Informatika</td>
         <td><a href="https://github.com/prkrx">prkrx</a></td>
     </tr>
 
